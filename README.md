@@ -1,3 +1,5 @@
+
+
 # gnecse-consultancy
 
 A project for management of consultancy services in CSE dept. in GNDEC
@@ -6,6 +8,7 @@ A project for management of consultancy services in CSE dept. in GNDEC
 
 Clone the repository in a local folder.
 Inside the root directory, run this command
+
 ```
 npm install
 ```
