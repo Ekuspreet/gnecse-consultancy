@@ -1,0 +1,14 @@
+{
+  "name": "gnecse-consultancy",
+  "version": "1.0.0",
+  "description": "A consultancy platform for Department of Computer Science & Engineering at Guru Nanak Dev Engineering College, Ludhiana",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Ekuspreet, Dilraj, Harsimran",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
