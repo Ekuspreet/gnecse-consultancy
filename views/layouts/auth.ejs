@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dracula">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE-CSP</title>
+    <link rel="stylesheet" href="/css/output.css">
+    <link rel="stylesheet" href="/css/globals.css">
+</head>
+
+<body>
+    <%- include('../partials/auth.navbar.ejs', { purpose: title }) %>
+    <main class="flex flex-col m-4 ">
+        <div class="actions flex-1 flex p-2 gap-4">
+            <a class="btn btn-secondary btn-outline flex-1 " href="/auth/login/<%= role %>" ><%= role.toUpperCase() %> LOGIN</a>
+            <a class="btn btn-secondary btn-outline flex-1 " href="/auth/signup/<%= role %>" ><%= role.toUpperCase() %> SIGN UP</a>
+        </div>
+        <%- body %>
+    </main>
+</body>
+
+</html>

@@ -1,8 +1,10 @@
-<div class="prose bg-primary  h-36 rounded-xl p-6 cursor-pointer"
-    style="background-image: url(https://img.freepik.com/free-vector/concept-landing-page-transfer-files_52683-26356.jpg?t=st=1724359864~exp=1724363464~hmac=bf8856a0e65c81f4088d33bfc613eeffc1306dff483c1f3232890d0595787b43&w=740);"
-    id="<%= id %>"
-    >
-    <p class="font-bold text-2xl text-primary-content text-center ">
-        <%= role %>
-    </p>
-</div>
+<a class="hero prose bg-primary h-36 rounded-xl  cursor-pointer" href="/auth/login/<%= id %>"
+    style="background-image: url( '<%= imgurl %>' ); background-size: cover; background-position: 5% 45%; "
+    id="<%= id %>">
+    <div
+        class="hero-overlay bg-opacity-60 hover:bg-opacity-0 text-2xl hover:text-3xl  hover:text-secondary transition-all ease-in-out rounded-xl">
+        <p class="font-bold   text-center text-inherit">
+            <%= role %>
+        </p>
+    </div>
+</a>
