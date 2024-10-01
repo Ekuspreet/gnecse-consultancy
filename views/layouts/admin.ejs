@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dracula">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE-CSP</title>
+    <link rel="stylesheet" href="/css/output.css">
+    <link rel="stylesheet" href="/css/globals.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+    <div class="flex flex-col h-screen">
+        <%- include('../partials/user.navbar.ejs') %>
+            <!-- Navbar (optional) -->
+            <div class="flex flex-1">
+                <div class="sidebar w-56 bg-base-300 h-full flex flex-col">
+
+                    <div class="links flex flex-col w-full flex-1">
+                        <a id="profile" class="btn no-animation btn-md  rounded-none" href="/admin/profile">Profile</a>
+                        <a id="active" class="btn no-animation btn-md  rounded-none" href="/admin/mentors">Mentors</a>
+                        <a id="active" class="btn no-animation btn-md  rounded-none" href="/admin/students">Students</a>
+                        <a id="completed" class="btn no-animation btn-md rounded-none"
+                            href="/admin/training">Testing & Consultancy Staff</a>
+                    </div>
+                    <div class="bottom  h-auto bg-base-200 border-t-2 border-secondary py-4 px-2">
+                        <div class="text-2xl font-semibold">
+                            <%= user.name %>
+                        </div>
+                        <div class="text-gray-400 font-semibold">
+                            <%= user.role %>
+                        </div>
+                        <div class="divider"></div>
+                        <button class="btn btn-md  my-1 btn-success w-full" onclick="mentorAdd.showModal()">Add
+                            Mentor</button>
+                        <button class="btn btn-md  my-1 btn-success w-full" onclick="trainingAdd.showModal()">Add Consultancy Staff </button>
+                        <button class="btn btn-sm btn-outline my-1 btn-error w-full" data-role="alumni" id="logout">Log
+                            Out</button>
+                    </div>
+                </div>
+                <div class="content flex-1 h-full overflow-auto">
+                    <%- body %>
+                </div>
+            </div>
+    </div>
+
+    <!-- Open the modal using ID.showModal() method -->
+    <dialog id="mentorAdd" class="modal">
+        <div class="modal-box">
+            <div class="flex justify-between items-center">
+                <p class="text-lg font-bold">Add A Mentor Account</p>
+                    <form method="dialog">
+                        <button class="link link-error"><span class="material-symbols-outlined">
+                            close
+                            </span></button>
+                    </form>
+            </div>
+            <div class="divider"></div>
+            <form class="space-y-4" id="add-mentor" data-role="mentor" onsubmit="AddEmployee(this,event)">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Full Name</span>
+                    </label>
+                    <input name="name" type="text" placeholder="Enter Full Name"
+                        class="input input-bordered w-full" required>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Email</span>
+                    </label>
+                    <input name="email" type="email" placeholder="Enter Email" class="input input-bordered w-full"
+                        required>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Phone Number</span>
+                    </label>
+                    <input name="phone" type="text" placeholder="Enter Phone Number"
+                        class="input input-bordered w-full" required>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Employee ID</span>
+                    </label>
+                    <input name="employeeid" type="text" placeholder="Enter Employee ID"
+                        class="input input-bordered w-full" required>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Password</span>
+                    </label>
+                    <input name="password" type="password" placeholder="Enter Password"
+                        class="input input-bordered w-full" required>
+                </div>
+                
+                <div class="form-control mt-6">
+                    <input type="submit" class="btn btn-primary w-full" value="Create Account"></input>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+
+        <!-- Open the modal using ID.showModal() method -->
+        <dialog id="trainingAdd" class="modal">
+            <div class="modal-box">
+                <div class="flex justify-between items-center">
+                    <p class="text-lg font-bold">Add A TNC Staff Account</p>
+                        <form method="dialog">
+                            <button class="link link-error"><span class="material-symbols-outlined">
+                                close
+                                </span></button>
+                        </form>
+                </div>
+                <div class="divider"></div>
+                <form class="space-y-4" id="add-training" data-role="training" onsubmit="AddEmployee(this,event)">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Full Name</span>
+                        </label>
+                        <input name="name" type="text" placeholder="Enter Full Name"
+                            class="input input-bordered w-full" required>
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Email</span>
+                        </label>
+                        <input name="email" type="email" placeholder="Enter Email" class="input input-bordered w-full"
+                            required>
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Phone Number</span>
+                        </label>
+                        <input name="phone" type="text" placeholder="Enter Phone Number"
+                            class="input input-bordered w-full" required>
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Employee ID</span>
+                        </label>
+                        <input name="employeeid" type="text" placeholder="Enter Employee ID"
+                            class="input input-bordered w-full" required>
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Password</span>
+                        </label>
+                        <input name="password" type="password" placeholder="Enter Password"
+                            class="input input-bordered w-full" required>
+                    </div>
+                    <div class="form-control mt-6">
+                        <input type="submit" class="btn btn-primary w-full" value="Create Account"></input>
+                    </div>
+                </form>
+    
+    
+            </div>
+        </dialog>
+    
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParts = window.location.href.split('/');
+            const lastItem = urlParts[urlParts.length - 1];
+            const navlink = document.getElementById(lastItem);
+            navlink.classList.add('btn-secondary');
+        });
+        const urlParts = window.location.href.split('/');
+        const lastItem = urlParts[urlParts.length - 1];
+
+    </script>
+
+    <script src="/js/Logout.js"></script>
+    <script src="/js/AddEmployee.js"></script>
+    <script src="/js/DeleteEmployee.js"></script>
+</body>
+
+</html>

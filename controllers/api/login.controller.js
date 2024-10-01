@@ -4,12 +4,16 @@ const { generateToken } = require('../../services/token');
 const { verifyPassword } = require('../../services/hasher');
 const { verifyStudentByCRN } = require('../../models/student.model');
 const { verifyAlumniByEmail } = require('../../models/alumni.model');
+const { getTrainingById } = require('../../models/training.model');
+const { getMentorById } = require('../../models/mentor.model');
 
 
 router.post('/admin', (req, res) => {
     const { username, password } = req.body;
     if(username == process.env.ADMIN_USERNAME && password == process.env.ADMIN_PASSWORD) {
-        res.json({ message: 'Login successful' });
+        const token = generateToken({ uuid: "0001", role: "admin", name: "Dr. Kiran Jyoti" });
+        res.cookie('auth-token', token, { httpOnly: true, secure: true });
+        res.json({ message: `Login successful for UUID: 0001` });
         return;
     }
     res.status(400).json({ message: 'Invalid credentials' });
@@ -58,11 +62,47 @@ router.post('/alumni', async (req, res) => {
     res.json({ message: `Login successful for UUID: ${alumni.uuid}` });
 });
 
-router.post('/training', (req, res) => {
-    res.json({ message: 'Login successful' });
+router.post('/training', async (req, res) => {
+    const { employeeid, password } = req.body;
+    console.log(req.body);
+    
+    const training = await getTrainingById(employeeid);
+    console.log(training);
+    if (training.error) {
+        res.status(400).json({ message: 'Invalid credentials' });
+        return;
+    }
+
+    const passwordMatch = verifyPassword(password, training.passhash);
+    if (!passwordMatch) {
+        res.status(400).json({ message: 'Invalid credentials' });
+        return;
+    }
+    const token = generateToken({ uuid: training.uuid, role: training.role, name: training.name });
+
+    res.cookie('auth-token', token, { httpOnly: true, secure: true });
+    res.json({ message: `Login successful for UUID: ${training.uuid}` });
 });
 
-router.post('/mentor', (req, res) => {
-    res.json({ message: 'Login successful' });
+router.post('/mentor', async (req, res) => {
+    const { employeeid, password } = req.body;
+    console.log(req.body);
+    
+    const mentor = await getMentorById(employeeid);
+    console.log(mentor);
+    if (mentor.error) {
+        res.status(400).json({ message: 'Invalid credentials' });
+        return;
+    }
+
+    const passwordMatch = verifyPassword(password, mentor.passhash);
+    if (!passwordMatch) {
+        res.status(400).json({ message: 'Invalid credentials' });
+        return;
+    }
+    const token = generateToken({ uuid: mentor.uuid, role: mentor.role, name: mentor.name });
+
+    res.cookie('auth-token', token, { httpOnly: true, secure: true });
+    res.json({ message: `Login successful for UUID: ${mentor.uuid}` });
 });
 module.exports = router;

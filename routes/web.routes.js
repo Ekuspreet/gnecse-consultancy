@@ -3,6 +3,8 @@ const landingPageController = require('../controllers/web/landing.controller');
 const authController = require('../controllers/web/auth.controller');
 const studentController = require('../controllers/web/student.controller');
 const alumniController = require('../controllers/web/alumni.controller');
+const adminController = require('../controllers/web/admin.controller');
+
 module.exports = function(app) {
     // Landing Page
     app.use('/', landingPageController);
@@ -16,4 +18,6 @@ module.exports = function(app) {
     // Pages for the alumni
     app.use('/alumni', alumniController);
 
+    // Pages for the admin
+    app.use('/admin', adminController);
 }

@@ -1,0 +1,35 @@
+<div class="overflow-x-auto">
+    <table class="table">
+        <!-- head -->
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>UUID</th>
+                <th>Name</th>
+                <th>Class Roll Number</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% students.forEach(function(student, index) { %>
+                <tr>
+                    <th>
+                        <%= index + 1 %>
+                    </th>
+                    <td>
+                        <%= student.uuid %>
+                    </td>
+                    <td>
+                        <%= student.name %>
+                    </td>
+                    <td>
+                        <%= student.crn %>
+                    </td>
+                    <td>
+                        <%= student.email %>
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+</div>

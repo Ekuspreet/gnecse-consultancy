@@ -1,56 +1,51 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/user.auth');
+const {getAllMentors} = require('../../models/mentor.model');
+const {getAllTrainingStaff} = require('../../models/training.model');
+const {getAllStudents} = require('../../models/student.model');
 
-router.get('/profile', authMiddleware(['student'], "web"), (req, res) => {
-    res.render('student/index', {
+
+router.get('/profile', authMiddleware(['admin'], "web"), (req, res) => {
+    res.render('admin/index', {
         title: 'PROFILE',
-        layout: 'layouts/student',
+        layout: 'layouts/admin',
         user: req.user,
     });
 });
 
-router.get('/friends', authMiddleware(['student'], "web"), (req, res) => {
-    res.render('student/friends', {
-        title: 'FRIENDS',
-        layout: 'layouts/student',
+router.get('/mentors', authMiddleware(['admin'], "web"), async (req, res) => {
+    const mentors = await getAllMentors();
+    res.render('admin/mentors', {
+        title: 'MENTORS',
+        layout: 'layouts/admin',
         user: req.user,
+        mentors : mentors,
+    });
+});
+router.get('/training', authMiddleware(['admin'], "web"), async (req, res) => {
+    const training = await getAllTrainingStaff();
+    res.render('admin/training', {
+        title: 'TESTING & CONSULTANCY STAFF',
+        layout: 'layouts/admin',
+        user: req.user,
+        trainings : training,
     });
 });
 
-router.get('/requests', authMiddleware(['student'], "web"), (req, res) => {
-    res.render('student/requests', {
-        title: 'FRIEND REQUESTS',
-        layout: 'layouts/student',
+router.get('/students', authMiddleware(['admin'], "web"), async (req, res) => {
+    const students = await getAllStudents();
+    res.render('admin/students', {
+        title: 'STUDENTS',
+        layout: 'layouts/admin',
         user: req.user,
+        students : students,
     });
 });
 
-router.get('/jobs-availible', authMiddleware(['student'], "web"), (req, res) => {
-    res.render('student/jobs-availible', {
-        title: 'JOBS AVAILIBLE',
-        layout: 'layouts/student',
-        user: req.user,
-    });
-});
 
-router.get('/job-assigned', authMiddleware(['student'], "web"), (req, res) => {
-    res.render('student/job-assigned', {
-        title: 'JOB ASSIGNED',
-        layout: 'layouts/student',
-        user: req.user,
-    });
-});
 
-router.get('/job-requests', authMiddleware(['student'], "web"), (req, res) => {
-    res.render('student/job-requests', {
-        title: 'JOB REQUESTS',
-        layout: 'layouts/student',
-        user: req.user,
-    });
-});
-
-router.get('/logout', authMiddleware(['student'], "web"), (req, res) => {
+router.get('/logout', authMiddleware(['admin'], "web"), (req, res) => {
     res.clearCookie('auth-token');
     res.redirect('/');
 });

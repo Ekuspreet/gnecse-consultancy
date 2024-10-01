@@ -1,0 +1,36 @@
+
+<div class="overflow-x-auto">
+    <table class="table">
+      <!-- head -->
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>UUID</th>
+          <th>Employee ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% mentors.forEach(function(mentor, index) { %>
+        <tr>
+          <th><%= index + 1 %></th>
+          <td><%= mentor.uuid %></td>
+          <td><%= mentor.employeeid %></td>
+          <td><%= mentor.name %></td>
+          <td><%= mentor.email %></td>
+          <td><%= mentor.phone %></td>
+          <td>
+            <!-- Add your action buttons/links here -->
+            
+            <button class="btn btn-sm btn-error btn-outline" data-employeeid = "<%= mentor.employeeid %>" data-role = "mentor" onclick="DeleteEmployee(this)"><span class="material-symbols-outlined">
+                delete
+                </span></button>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+</div>

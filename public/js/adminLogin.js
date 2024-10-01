@@ -12,6 +12,9 @@ form.addEventListener('submit', async function(e) {
     });
     if(result.ok) {
         // If response is ok.
+        const data = await result.json();
+        alert(data.message);
+        window.location.href = '/admin/profile';
 
     } else {
         // If response is not ok.

@@ -21,7 +21,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(expressLayouts);
 
 // Specify the layout files. Add all the layout files in the parameter of the set method.
-app.set("layout", "layouts/main", "layouts/auth", "layouts/student");
+app.set("layout", "layouts/main", "layouts/auth", "layouts/student", "layouts/alumni", "layouts/admin");
 
 // Set the public directory. This is where the static files are stored.
 app.use(express.static(path.join(__dirname, "public")));
