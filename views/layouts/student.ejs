@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dracula">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE-CSP</title>
+    <link rel="stylesheet" href="/css/output.css">
+    <link rel="stylesheet" href="/css/globals.css">
+</head>
+<body>
+    <div class="flex flex-col h-screen">
+    <%- include('../partials/user.navbar.ejs') %>
+    <!-- Navbar (optional) -->
+    <div class="flex flex-1">
+        <div class="sidebar w-56 bg-base-300 h-full flex flex-col">
+
+            <div class="links flex flex-col w-full flex-1">
+                <a id="profile" class="btn no-animation btn-md  rounded-none" href="/student/profile">Profile</a>
+                <a id="friends" class="btn no-animation btn-md rounded-none" href="/student/friends">Friends</a>
+                <a id="requests" class="btn no-animation btn-md rounded-none" href="/student/requests">Friend Requests</a>
+                <a id="jobs-availible" class="btn no-animation btn-md rounded-none" href="/student/jobs-availible">Jobs Availible</a>
+                <a id="job-assigned" class="btn no-animation btn-md rounded-none" href="/student/job-assigned">Job Assigned</a>
+                <a id="job-requests" class="btn no-animation btn-md rounded-none" href="/student/job-requests">Job Requests</a>
+            </div>
+            <div class="bottom  h-auto bg-base-200 border-t-2 border-secondary py-4 px-2">
+                <div class="text-2xl font-semibold"><%= user.name %></div>
+                <div class="text-gray-400 font-semibold">Student</div>
+                <div class="divider"></div>
+                <button class="btn btn-sm btn-outline btn-error w-full" id="logout" data-role = "student">Log Out</button>
+            </div>
+        </div>
+        <div class="content flex-1 h-full overflow-auto">
+            <%- body %>
+        </div>
+    </div>
+</div>
+
+        
+    <script>
+       // Highlighting the current page link
+       document.addEventListener('DOMContentLoaded', () => {
+            const urlParts = window.location.href.split('/');
+            const lastItem = urlParts[urlParts.length - 1];
+            const navlink = document.getElementById(lastItem);
+            navlink.classList.add('btn-secondary');
+        });
+       const urlParts = window.location.href.split('/');
+        const lastItem = urlParts[urlParts.length - 1];
+
+    </script>
+    <script src = '/js/Logout.js'></script>
+</body>
+</html>

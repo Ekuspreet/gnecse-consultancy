@@ -13,11 +13,12 @@ router.get('/login/:role', (req, res) => {
 });
 
 router.get('/signup/:role', (req, res) => {
-    const role = req.params.role;
-    var title = `${role.toUpperCase()} SIGN UP`
-    if(role == 'training') {
-        title = 'TNP STAFF SIGN UP';
+   const role = req.params.role;
+    if(!(role == 'student' || role == 'alumni')) {
+        res.render('errors/404');
+        return;
     }
+    var title = `${role.toUpperCase()} SIGNUP`;
     res.render(`auth/signup/${role}`, { role : role , layout : 'layouts/auth', title : title});
 });
 

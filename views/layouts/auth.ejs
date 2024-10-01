@@ -14,10 +14,16 @@
     <main class="flex flex-col m-4 ">
         <div class="actions flex-1 flex p-2 gap-4">
             <a class="btn btn-secondary btn-outline flex-1 " href="/auth/login/<%= role %>" ><%= role.toUpperCase() %> LOGIN</a>
+        <% if (role == 'student' || role == 'alumni') { %>
             <a class="btn btn-secondary btn-outline flex-1 " href="/auth/signup/<%= role %>" ><%= role.toUpperCase() %> SIGN UP</a>
-        </div>
-        <%- body %>
+        <% } %>    
+    </div>
+    <div class="divider"></div>
+    <%- body %>
     </main>
+<script>
+    console.log(" <%= role %> ");
+</script>
 </body>
 
 </html>

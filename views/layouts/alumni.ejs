@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dracula">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE-CSP</title>
+    <link rel="stylesheet" href="/css/output.css">
+    <link rel="stylesheet" href="/css/globals.css">
+</head>
+<body>
+    <div class="flex flex-col h-screen">
+    <%- include('../partials/user.navbar.ejs') %>
+    <!-- Navbar (optional) -->
+    <div class="flex flex-1">
+        <div class="sidebar w-56 bg-base-300 h-full flex flex-col">
+
+            <div class="links flex flex-col w-full flex-1">
+                <a id="profile" class="btn no-animation btn-md  rounded-none" href="/alumni/profile">Profile</a>
+                <a id="active" class="btn no-animation btn-md  rounded-none" href="/alumni/active">Active Jobs</a>
+                <a id="completed" class="btn no-animation btn-md rounded-none" href="/alumni/completed">Completed Jobs</a>
+            </div>
+            <div class="bottom  h-auto bg-base-200 border-t-2 border-secondary py-4 px-2">
+                <div class="text-2xl font-semibold">Ekuspreet Singh</div>
+                <div class="text-gray-400 font-semibold">Alumni</div>
+                <div class="divider"></div>
+                <button class="btn btn-md  my-1 btn-success w-full">Create A Job</button>
+                <button class="btn btn-sm btn-outline my-1 btn-error w-full" data-role = "alumni" id="logout">Log Out</button>
+            </div>
+        </div>
+        <div class="content flex-1 h-full overflow-auto">
+            <%- body %>
+        </div>
+    </div>
+</div>
+
+        
+    <script>
+       
+       document.addEventListener('DOMContentLoaded', () => {
+            const urlParts = window.location.href.split('/');
+            const lastItem = urlParts[urlParts.length - 1];
+            const navlink = document.getElementById(lastItem);
+            navlink.classList.add('btn-secondary');
+        });
+       const urlParts = window.location.href.split('/');
+        const lastItem = urlParts[urlParts.length - 1];
+       
+    </script>
+
+    <script src = "/js/Logout.js"></script>
+</body>
+</html>

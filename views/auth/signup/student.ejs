@@ -1,0 +1,37 @@
+<form class="space-y-4" id="student" onsubmit="SignUp(this,event)">
+    <div class="form-control">
+        <label class="label">
+            <span class="label-text">Name</span>
+        </label>
+        <input type="text" name="name" placeholder="Enter your name" class="input input-bordered w-full" required>
+    </div>
+    <div class="form-control">
+        <label class="label">
+            <span class="label-text">Class Roll Number</span>
+        </label>
+        <input type="text" name="crn" placeholder="Enter your CRN" class="input input-bordered w-full" required>
+    </div>
+    <div class="form-control">
+        <label class="label">
+            <span class="label-text">Email</span>
+        </label>
+        <input type="email" name="email" placeholder="Enter your email" class="input input-bordered w-full" required>
+    </div>
+    <div class="form-control">
+        <label class="label">
+            <span class="label-text">Password</span>
+        </label>
+        <input type="password" name="password" placeholder="Enter your password" class="input input-bordered w-full" required>
+    </div>
+    <div class="form-control">
+        <label class="label">
+            <span class="label-text">Confirm Password</span>
+        </label>
+        <input type="password" name="cnfpassword" placeholder="Confirm your password" class="input input-bordered w-full" required>
+    </div>
+    <div class="form-control mt-6">
+        <input type="submit" class="btn btn-primary w-full" value="Sign Up">
+    </div>
+</form>
+
+<script src="/js/SignUp.js"></script>

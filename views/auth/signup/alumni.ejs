@@ -1,29 +1,43 @@
-<form class="space-y-4">
+<form class="space-y-4" id="alumni" onsubmit="SignUp(this,event)">
     <div class="form-control">
         <label class="label">
             <span class="label-text">Full Name</span>
         </label>
-        <input type="text" placeholder="Enter your full name" class="input input-bordered w-full" required>
+        <input name="name" type="text" placeholder="Enter your full name" class="input input-bordered w-full" required>
     </div>
     <div class="form-control">
         <label class="label">
             <span class="label-text">Email</span>
         </label>
-        <input type="email" placeholder="Enter your email" class="input input-bordered w-full" required>
+        <input name="email" type="email" placeholder="Enter your email" class="input input-bordered w-full" required>
+    </div>
+    <div class="form-control">
+        <label class="label">
+            <span class="label-text">Phone Number</span>
+        </label>
+        <input name="phone" type="text" placeholder="Enter your phone number" class="input input-bordered w-full" required>
+    </div>
+    <div class="form-control">
+        <label class="label">
+            <span class="label-text">Year Of Passout</span>
+        </label>
+        <input name="passyear" type="number" placeholder="Year Of Passout" class="input input-bordered w-full" max="<%= new Date().getFullYear() - 4 %>" min="1956" required>
     </div>
     <div class="form-control">
         <label class="label">
             <span class="label-text">Password</span>
         </label>
-        <input type="password" placeholder="Enter your password" class="input input-bordered w-full" required>
+        <input name="password" type="password" placeholder="Enter your password" class="input input-bordered w-full" required>
     </div>
     <div class="form-control">
-        <label class="label cursor-pointer">
-            <span class="label-text">Remember me</span> 
-            <input type="checkbox" class="checkbox checkbox-primary">
+        <label class="label">
+            <span class="label-text">Confirm Password</span>
         </label>
+        <input name="cnfpassword" type="password" placeholder="Enter your password" class="input input-bordered w-full" required>
     </div>
     <div class="form-control mt-6">
-        <button class="btn btn-primary w-full">Register</button>
+        <input type="submit" class="btn btn-primary w-full" value="Sign Up"></input>
     </div>
 </form>
+
+<script src="/js/SignUp.js"></script>
