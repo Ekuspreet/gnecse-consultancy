@@ -45,7 +45,11 @@ const addTraining = async (trainingData) => {
 // Function to delete a training by their ID.
 const deleteTrainingById = async (employeeid,role) => {
     try {
-        const removedUser = await user.deleteOne({ role:role ,employeeid: employeeid });
+        const userToDelete = await user.findOne({ role: role, employeeid: employeeid });
+        if (!userToDelete) {
+            return { error: 'User not found' };
+        }
+        const removedUser = await user.deleteOne({ role: role, employeeid: employeeid });
         return removedUser;
     } catch (err) {
         return {'error': err};

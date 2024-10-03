@@ -34,4 +34,7 @@ router.post("/student", async (req, res) => {
 
   res.json({ message: `Login successful! Your UUID : ${student.uuid} ` });
 });
+
+
+
 module.exports = router;
