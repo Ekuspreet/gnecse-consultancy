@@ -14,18 +14,18 @@
         </tr>
       </thead>
       <tbody>
-        <% trainings.forEach(function(training, index) { %>
+        <% tccs.forEach(function(tcc, index) { %>
         <tr>
           <th><%= index + 1 %></th>
-          <td><%= training.uuid %></td>
-          <td><%= training.employeeid %></td>
-          <td><%= training.name %></td>
-          <td><%= training.email %></td>
-          <td><%= training.phone %></td>
+          <td><%= tcc.uuid %></td>
+          <td><%= tcc.employeeid %></td>
+          <td><%= tcc.name %></td>
+          <td><%= tcc.email %></td>
+          <td><%= tcc.phone %></td>
           <td>
             <!-- Add your action buttons/links here -->
             
-            <button class="btn btn-sm btn-error btn-outline" data-employeeid = "<%= training.employeeid %>" data-role = "mentor" onclick="DeleteEmployee(this)"><span class="material-symbols-outlined">delete</span>
+            <button class="btn btn-sm btn-error btn-outline" data-employeeid = "<%= tcc.employeeid %>" data-role = "tcc" onclick="DeleteEmployee(this)"><span class="material-symbols-outlined">delete</span>
           </td>
         </tr>
         <% }); %>

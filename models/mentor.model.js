@@ -1,11 +1,11 @@
 const express = require('express');
-const user = require('./user.model');
+const {Staff} = require('./user.model');
 const { hashPassword } = require('../services/hasher');
 
 // Function to get a list of all mentors.
 const getAllMentors = async () => {   
     try {
-        const users = await user.find({ role: 'mentor' });
+        const users = await Staff.find({ role: 'mentor' });
         return users;
     } catch (err) {
         return {'error': err};
@@ -15,8 +15,8 @@ const getAllMentors = async () => {
 // Function to get a specific mentor by their ID.
 const getMentorById = async (employeeid) => {
     try {
-        const user = await user.findOne({employeeid : employeeid});
-        return user;
+        const mentor = await Staff.findOne({employeeid : employeeid});
+        return mentor;
     } catch (err) {
         return {'error': err};
     }
@@ -26,7 +26,7 @@ const getMentorById = async (employeeid) => {
 const addMentor = async (mentorData) => {
     const { name, email, phone, password, employeeid } = mentorData;
     const passhash = await hashPassword(password);
-    const newUser = new user({
+    const newUser = new Staff({
         name,
         email,
         passhash,
@@ -43,35 +43,24 @@ const addMentor = async (mentorData) => {
 };
 
 // Function to delete a mentor by their ID.
-const deleteMentorById = async (employeeid,role) => {
-    console.log(employeeid,role);
-    
+const deleteMentorById = async (uuid) => {
+    console.log(uuid);
     try {
-        const userToDelete = await user.findOne({ role: role, employeeid: employeeid });
+        const userToDelete = await Staff.findOne({ uuid });
         if (!userToDelete) {
             return { error: 'User not found' };
         }
-        const removedUser = await user.deleteOne({ role: role, employeeid: employeeid });
+        const removedUser = await Staff.deleteOne({ uuid });
         return removedUser;
     } catch (err) {
         return {'error': err};
     }
 };
 
-// Verify if mentor exists by crn
-const verifyMentorByCRN = async (crn) => {
-    try {
-        const mentor = await user.findOne({ crn : crn , role : 'mentor' });
-        return mentor;
-    } catch (err) {
-        return {'error': err};
-    }
-};
 
 module.exports = {
     getAllMentors,
     getMentorById,
     addMentor,
     deleteMentorById,
-    verifyMentorByCRN
 };

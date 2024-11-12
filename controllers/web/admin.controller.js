@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/user.auth');
 const {getAllMentors} = require('../../models/mentor.model');
-const {getAllTrainingStaff} = require('../../models/training.model');
+const {getAllTccStaff} = require('../../models/tcc.model');
 const {getAllStudents} = require('../../models/student.model');
 
 
@@ -16,6 +16,7 @@ router.get('/profile', authMiddleware(['admin'], "web"), (req, res) => {
 
 router.get('/mentors', authMiddleware(['admin'], "web"), async (req, res) => {
     const mentors = await getAllMentors();
+    console.log(mentors)
     res.render('admin/mentors', {
         title: 'MENTORS',
         layout: 'layouts/admin',
@@ -23,13 +24,14 @@ router.get('/mentors', authMiddleware(['admin'], "web"), async (req, res) => {
         mentors : mentors,
     });
 });
-router.get('/training', authMiddleware(['admin'], "web"), async (req, res) => {
-    const training = await getAllTrainingStaff();
-    res.render('admin/training', {
+router.get('/tcc', authMiddleware(['admin'], "web"), async (req, res) => {
+    const tcc = await getAllTccStaff();
+    console.log(tcc)
+    res.render('admin/tcc', {
         title: 'TESTING & CONSULTANCY STAFF',
         layout: 'layouts/admin',
         user: req.user,
-        trainings : training,
+        tccs : tcc,
     });
 });
 

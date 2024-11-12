@@ -13,11 +13,11 @@
     <%- include('../partials/auth.navbar.ejs', { purpose: title }) %>
     <main class="flex flex-col m-4 ">
         <div class="actions flex-1 flex p-2 gap-4">
-            <a class="btn btn-secondary btn-outline flex-1 " href="/auth/login/<%= role %>" ><%= role.toUpperCase() %> LOGIN</a>
+            <a class="btn btn-secondary btn-outline flex-1 " href="/auth/login/<%= role %>" > <%- include('../partials/role.display.ejs', {role: role}) %> LOGIN</a>
         <% if (role == 'student' || role == 'alumni') { %>
-            <a class="btn btn-secondary btn-outline flex-1 " href="/auth/signup/<%= role %>" ><%= role.toUpperCase() %> SIGN UP</a>
+            <a class="btn btn-secondary btn-outline flex-1 " href="/auth/signup/<%= role %>" > <%- include('../partials/role.display.ejs', {role: role}) %> SIGN UP</a>
         <% } %>    
-    </div>
+        </div>
     <div class="divider"></div>
     <%- body %>
     </main>

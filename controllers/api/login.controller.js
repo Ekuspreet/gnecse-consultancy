@@ -4,7 +4,7 @@ const { generateToken } = require('../../services/token');
 const { verifyPassword } = require('../../services/hasher');
 const { verifyStudentByCRN } = require('../../models/student.model');
 const { verifyAlumniByEmail } = require('../../models/alumni.model');
-const { getTrainingById } = require('../../models/training.model');
+const { getTccById } = require('../../models/tcc.model');
 const { getMentorById } = require('../../models/mentor.model');
 
 
@@ -34,7 +34,7 @@ router.post('/student', async (req, res) => {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
     }
-    const token = generateToken({ uuid: student.uuid, role: student.role, name: student.name });
+    const token = generateToken({ uuid: student.uuid, role: "student", name: student.name });
 
     res.cookie('auth-token', token, { httpOnly: true, secure: true });
     res.json({ message: `Login successful for UUID: ${student.uuid}` });
@@ -44,7 +44,7 @@ router.post('/alumni', async (req, res) => {
     const { email, password } = req.body;
     console.log(req.body);
     
-    const alumni = await verifyAlumniByEmail(email); // Assuming alumni are verified similarly
+    const alumni = await verifyAlumniByEmail(email); 
     console.log(alumni);
     if (alumni.error) {
         res.status(400).json({ message: 'Invalid credentials' });
@@ -56,32 +56,32 @@ router.post('/alumni', async (req, res) => {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
     }
-    const token = generateToken({ uuid: alumni.uuid, role: alumni.role, name: alumni.name });
+    const token = generateToken({ uuid: alumni.uuid, role: "alumni", name: alumni.name });
 
     res.cookie('auth-token', token, { httpOnly: true, secure: true });
     res.json({ message: `Login successful for UUID: ${alumni.uuid}` });
 });
 
-router.post('/training', async (req, res) => {
+router.post('/tcc', async (req, res) => {
     const { employeeid, password } = req.body;
     console.log(req.body);
     
-    const training = await getTrainingById(employeeid);
-    console.log(training);
-    if (training.error) {
+    const tcc = await gettccById(employeeid);
+    console.log(tcc);
+    if (tcc.error) {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
     }
 
-    const passwordMatch = verifyPassword(password, training.passhash);
+    const passwordMatch = verifyPassword(password, tcc.passhash);
     if (!passwordMatch) {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
     }
-    const token = generateToken({ uuid: training.uuid, role: training.role, name: training.name });
+    const token = generateToken({ uuid: tcc.uuid, role: "tcc", name: tcc.name });
 
     res.cookie('auth-token', token, { httpOnly: true, secure: true });
-    res.json({ message: `Login successful for UUID: ${training.uuid}` });
+    res.json({ message: `Login successful for UUID: ${tcc.uuid}` });
 });
 
 router.post('/mentor', async (req, res) => {
@@ -100,7 +100,7 @@ router.post('/mentor', async (req, res) => {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
     }
-    const token = generateToken({ uuid: mentor.uuid, role: mentor.role, name: mentor.name });
+    const token = generateToken({ uuid: mentor.uuid, role: "mentor", name: mentor.name });
 
     res.cookie('auth-token', token, { httpOnly: true, secure: true });
     res.json({ message: `Login successful for UUID: ${mentor.uuid}` });

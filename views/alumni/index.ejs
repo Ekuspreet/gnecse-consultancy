@@ -1,0 +1,219 @@
+<section class="p-3 flex justify-between items-center">
+    <p class="text-4xl font-bold text-gray-400">Welcome! <span class="text-base-content"><%= user.name %></span> </p>
+    <div class="text-xl font-semibold"><%= new Date().toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric'
+      }) %></div>
+      
+</section>
+
+<div class="divider"></div>
+<div class="p-3 font-bold text-2xl">DRAFTS SAVED</div>
+<!-- Storing the drafts here -->
+<% if (drafts.length === 0) { %>
+    <!-- If drafts are empty -->
+    <h2 class="text-xl p-3">
+        You have no drafts yet. Click on Start Consulting to begin!.
+    </h2>
+<% } else { %>
+    <div class="flex flex-wrap gap-3 p-3">
+    <% drafts.forEach(function(draft) { %>
+        <%- include('../partials/project.ejs', {
+            project: draft,
+        }) %>
+    <% }); %>
+</div>
+    <% } %>
+
+
+    <dialog id="projectedit" class="modal  " >
+        <div class="modal-box w-10/12" style="max-width: none;">
+            <div class="flex justify-between items-center ">
+                <p class="text-xl font-bold">Edit The Project</p>
+                <form  method="dialog">
+                    <button class="link link-error"><span class="material-symbols-outlined">
+                        close
+                    </span></button>
+                </form>
+            </div>
+            <div class="modal-body ">
+                <form id="project-edit" class="grid gap-3 grid-flow-row">
+                     <!-- Project Title -->
+                     <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Project Title <span class="text-red-400">*</span> </span>
+                        </label>
+                        <input aria-required="true" name="title" type="text" placeholder="Enter Project Title" class="input input-bordered w-full" required>
+                    </div>
+                
+                    <!-- Description -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Project Description <span class="text-red-400">*</span></span>
+                        </label>
+                        <textarea class="textarea textarea-bordered" required name="description" placeholder="Enter Project Description in brief. Here you can include any pain points/requirements of the project." rows="10" required></textarea>
+                    </div>
+                
+                    <!-- Tech Stack (Preferred) -->
+                    <div class="flex gap-2 flex-wrap">
+                    <div class="form-control flex-1">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Tech Stack</span>
+                        </label>
+                        <input name="techStack" type="text" placeholder="e.g., JavaScript, Python, SQL" class="input input-bordered w-full">
+                    </div>
+    
+                    <div class="form-control flex-1">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Skills Required</span>
+                        </label>
+                        <input name="skills" type="text" placeholder="e.g., Web Development, Data Analysis" class="input input-bordered w-full">
+                    </div>
+                </div>
+                    <!-- Project Duration -->
+                    
+                <div class="flex gap-2 flex-wrap">
+    
+                    <!-- Start Date -->
+                    <div class="form-control flex-1">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Proposed Start Date <span class="text-red-400">*</span></span>
+                        </label>
+                        <input required name="startDate" type="date" class="input input-bordered w-full" required>
+                    </div>
+                
+                    <!-- Application Deadline -->
+                    <div class="form-control flex-1">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Project Deadline <span class="text-red-400">*</span></span>
+                        </label>
+                        <input required name="deadline" type="date" class="input input-bordered w-full" required>
+                    </div>
+                
+                </div>
+    
+              
+                   
+                
+                    <!-- Features -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Features</span>
+                        </label>
+                        <textarea name="features" placeholder="Enter Features" class="textarea textarea-bordered" rows="3"></textarea>
+                    </div>
+                
+                    <!-- Objectives -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Objectives</span>
+                        </label>
+                        <textarea name="objectives" placeholder="Enter Objectives" class="textarea textarea-bordered" rows="3"></textarea>
+                    </div>
+                
+                    <!-- Expected Outcomes -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Expected Outcomes</span>
+                        </label>
+                        <textarea name="outcomes" placeholder="Enter Expected Outcomes" class="textarea textarea-bordered" rows="3"></textarea>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                    <!-- Consulting Hours per Week -->
+                    <div class="form-control flex-1">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Consulting Hours per Week <span class="text-red-400">*</span></span>
+                        </label>
+                        <input name="consultingHours" type="number" min="1" placeholder="e.g., 5" class="input input-bordered w-full" required>
+                    </div>
+                
+                    
+                
+                    <!-- Preferred Communication Method -->
+                    <div class="form-control flex-1">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Preferred Communication Method <span class="text-red-400">*</span> </span>
+                        </label>
+                        <select name="communication" class="input input-bordered w-full" required>
+                            <option value="email">Email</option>
+                            <option value="phone">Phone</option>
+                        </select>
+                    </div>
+                
+                    <!-- Project Type -->
+                    <div class="form-control flex-1">
+                        <label class="label">
+                            <span class="label-text text-md font-semibold">Project Type</span>
+                        </label>
+                        <select name="projectType" class="input input-bordered w-full" required>
+                            <option value="research">Research</option>
+                            <option value="productDevelopment">Product Development</option>
+                            <option value="mentorship">Mentorship</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    </div>
+                <div class="actions flex gap-3 sticky bottom-0 bg-base-100 w-full">
+                <button type="submit" value="draft" class="w-4/12 min-w-40 btn my-1   btn-outline  rounded-none no-animation"
+                >Save As Draft</button>
+                <button type="submit" value="post" class="btn my-1 flex-1 btn-secondary btn-outline  rounded-none no-animation"
+                >Post Project</button>       
+                </div>
+            </form>
+            </div>
+        </div>
+    </dialog>
+
+<script>
+    const editForm = document.getElementById('project-edit');
+    function editProject(puid,data,button){
+        const projectData = JSON.parse(data);
+        delete projectData.action;
+        Object.keys(projectData).forEach(key => {
+            const input = editForm.querySelector(`[name=${key}]`);
+            if (input) {
+            input.value = projectData[key];
+            }
+        });
+        
+        projectedit.showModal();
+     
+    }
+    
+    
+    editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(editForm);
+        const data = Object.fromEntries(formData.entries());
+        var action = "";
+
+        if(e.submitter.value == "draft"){
+            action = "PUT";
+        }
+        if(e.submitter.value == "post"){
+            action = "POST";
+        }
+        
+        const response = await fetch(`/api/project/${data.puid}`, {
+            method: action,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        
+
+        if(action == "draft"){
+            // Save as draft
+            console.log("Draft saved",data);
+        }
+
+        if(action == "post"){
+            // Post the project
+            console.log("Project posted",data);
+        }
+    });
+</script>
