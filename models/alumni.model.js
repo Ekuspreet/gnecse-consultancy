@@ -1,11 +1,11 @@
 const express = require('express');
-const user = require('./user.model');
+const { Alumni } = require('./user.model');
 const { hashPassword } = require('../services/hasher');
 
 // Function to get a list of all alumni.
 const getAllAlumni = async () => {   
     try {
-        const users = await user.find({ role: 'alumni' });
+        const users = await Alumni.find({ role: 'alumni' });
         return users;
     } catch (err) {
         return err;
@@ -15,7 +15,7 @@ const getAllAlumni = async () => {
 // Function to get a specific alumni by their ID.
 const getAlumniById = async (uuid) => {
     try {
-        const user = await user.findById(uuid);
+        const user = await Alumni.findById(uuid);
         return user;
     } catch (err) {
         return err;
@@ -26,11 +26,10 @@ const getAlumniById = async (uuid) => {
 const createAlumni = async (alumniData) => {
     const { name, email, password, passyear, phone } = alumniData;
     const passhash = await hashPassword(password);
-    const newUser = new user({
+    const newUser = new Alumni({
         name,
         email,
         passhash,
-        role: 'alumni',
         passyear,
         phone
         });
@@ -44,7 +43,7 @@ const createAlumni = async (alumniData) => {
 
 const verifyAlumniByEmail = async (email) => {
     try {
-        const alumni = await user.findOne({ email : email , role : 'alumni' });
+        const alumni = await Alumni.findOne({ email });
         return alumni;
     } catch (err) {
         return err;
@@ -53,7 +52,7 @@ const verifyAlumniByEmail = async (email) => {
 // Function to delete an alumni by their ID.
 const deleteAlumniById = async (uuid) => {
     try {
-        const removedUser = await user.remove({ _id: uuid });
+        const removedUser = await Alumni.remove({ uuid });
         return removedUser;
     } catch (err) {
         return err;

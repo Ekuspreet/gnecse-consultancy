@@ -1,21 +1,29 @@
 const {verifyToken, decodeToken} = require('../services/token');
 
-
+function returnError(res,type,fallbackPath = "/",message = "Unauthorized For This Action") {
+    if(type === "api") {
+        return res.status(403).json({message});
+    }
+    if(type === "web") {
+        return res.redirect(fallbackPath);
+    }
+}
 function authMiddleware(roles, type) {
+
     return function (req, res, next) {
         const token = req.cookies['auth-token'];
         if(!token) {
-            res.redirect('/');
+            returnError(res,type,"/");
             return;
         }
         if(!verifyToken(token)) {
-            res.redirect('/');
+            returnError(res,type,"/");
             return;
         }
 
         const user = decodeToken(token);
         if (!roles.includes(user.role)) {
-            res.redirect('/');
+            returnError(res,type,"/","Invalid Role");
             return;
         }
         req.user = user;

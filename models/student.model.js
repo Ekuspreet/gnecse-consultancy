@@ -1,12 +1,11 @@
-const express = require('express');
-const user = require('./user.model');
+const {Student} = require('./user.model');
 const { hashPassword } = require('../services/hasher');
 
 // Function to get a list of all students.
 const getAllStudents = async () => {   
     try {
-        const users = await user.find({ role: 'student' });
-        return users;
+        const students = await Student.find({ role: 'student' });
+        return students;
     } catch (err) {
         return {'error': err};
     }
@@ -15,8 +14,8 @@ const getAllStudents = async () => {
 // Function to get a specific student by their ID.
 const getStudentById = async (uuid) => {
     try {
-        const user = await user.findById(uuid);
-        return user;
+        const student = await Student.findById(uuid);
+        return student;
     } catch (err) {
         return {'error': err};
     }
@@ -26,16 +25,15 @@ const getStudentById = async (uuid) => {
 const createStudent = async (studentData) => {
     const { name, email, password, crn } = studentData;
     const passhash = await hashPassword(password);
-    const newUser = new user({
+    const newStudent = new Student({
         name,
         email,
         passhash,
-        role: 'student',
         crn,
     });
     try {
-        const savedUser = await newUser.save();
-        return savedUser;
+        const savedStudent = await newStudent.save();
+        return savedStudent;
     } catch (err) {
         return {'error': err};
     }
@@ -44,8 +42,8 @@ const createStudent = async (studentData) => {
 // Function to delete a student by their ID.
 const deleteStudentById = async (uuid) => {
     try {
-        const removedUser = await user.remove({ _id: uuid });
-        return removedUser;
+        const removedStudent = await Student.remove({ _id: uuid });
+        return removedStudent;
     } catch (err) {
         return {'error': err};
     }
@@ -54,7 +52,7 @@ const deleteStudentById = async (uuid) => {
 // Verify if student exists by crn
 const verifyStudentByCRN = async (crn) => {
     try {
-        const student = await user.findOne({ crn : crn , role : 'student' });
+        const student = await Student.findOne({ crn : crn , role : 'student' });
         return student;
     } catch (err) {
         return {'error': err};

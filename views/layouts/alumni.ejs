@@ -6,6 +6,7 @@
     <title>CSE-CSP</title>
     <link rel="stylesheet" href="/css/output.css">
     <link rel="stylesheet" href="/css/globals.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
     <div class="flex flex-col h-screen">
@@ -23,17 +24,157 @@
                 <div class="text-2xl font-semibold">Ekuspreet Singh</div>
                 <div class="text-gray-400 font-semibold">Alumni</div>
                 <div class="divider"></div>
-                <button class="btn btn-md  my-1 btn-success w-full">Create A Job</button>
-                <button class="btn btn-sm btn-outline my-1 btn-error w-full" data-role = "alumni" id="logout">Log Out</button>
+                <button class="btn btn-md  my-1 btn-secondary btn-outline w-full rounded-none no-animation"
+                onclick="consultancy.showModal()"
+                >Start Consulting</button>
+                <button class="btn btn-sm btn-outline my-1 btn-error w-full rounded-none no-animation" data-role = "alumni" id="logout">Log Out</button>
             </div>
         </div>
         <div class="content flex-1 h-full overflow-auto">
             <%- body %>
+            
         </div>
     </div>
+    
 </div>
+    
+<dialog id="consultancy" class="modal  " >
+    <div class="modal-box w-10/12" style="max-width: none;">
+        <div class="flex justify-between items-center ">
+            <p class="text-xl font-bold">Post A Brand New Project</p>
+            <form method="dialog">
+                <button class="link link-error"><span class="material-symbols-outlined">
+                    close
+                </span></button>
+            </form>
+        </div>
+        <div class="modal-body ">
+            <form id="project-post" class="grid gap-3 grid-flow-row">
+                 <!-- Project Title -->
+                 <div class="form-control">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Project Title <span class="text-red-400">*</span> </span>
+                    </label>
+                    <input aria-required="true" name="title" type="text" placeholder="Enter Project Title" class="input input-bordered w-full" required>
+                </div>
+            
+                <!-- Description -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Project Description <span class="text-red-400">*</span></span>
+                    </label>
+                    <textarea class="textarea textarea-bordered" required name="description" placeholder="Enter Project Description in brief. Here you can include any pain points/requirements of the project." rows="10" required></textarea>
+                </div>
+            
+                <!-- Tech Stack (Preferred) -->
+                <div class="flex gap-2 flex-wrap">
+                <div class="form-control flex-1">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Tech Stack</span>
+                    </label>
+                    <input name="techStack" type="text" placeholder="e.g., JavaScript, Python, SQL" class="input input-bordered w-full">
+                </div>
 
-        
+                <div class="form-control flex-1">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Skills Required</span>
+                    </label>
+                    <input name="skills" type="text" placeholder="e.g., Web Development, Data Analysis" class="input input-bordered w-full">
+                </div>
+            </div>
+                <!-- Project Duration -->
+                
+            <div class="flex gap-2 flex-wrap">
+
+                <!-- Start Date -->
+                <div class="form-control flex-1">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Proposed Start Date <span class="text-red-400">*</span></span>
+                    </label>
+                    <input required name="startDate" type="date" class="input input-bordered w-full" required>
+                </div>
+            
+                <!-- Application Deadline -->
+                <div class="form-control flex-1">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Project Deadline <span class="text-red-400">*</span></span>
+                    </label>
+                    <input required name="deadline" type="date" class="input input-bordered w-full" required>
+                </div>
+            
+            </div>
+
+          
+               
+            
+                <!-- Features -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Features</span>
+                    </label>
+                    <textarea name="features" placeholder="Enter Features" class="textarea textarea-bordered" rows="3"></textarea>
+                </div>
+            
+                <!-- Objectives -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Objectives</span>
+                    </label>
+                    <textarea name="objectives" placeholder="Enter Objectives" class="textarea textarea-bordered" rows="3"></textarea>
+                </div>
+            
+                <!-- Expected Outcomes -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Expected Outcomes</span>
+                    </label>
+                    <textarea name="outcomes" placeholder="Enter Expected Outcomes" class="textarea textarea-bordered" rows="3"></textarea>
+                </div>
+                <div class="flex gap-2 flex-wrap">
+                <!-- Consulting Hours per Week -->
+                <div class="form-control flex-1">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Consulting Hours per Week <span class="text-red-400">*</span></span>
+                    </label>
+                    <input name="consultingHours" type="number" min="1" placeholder="e.g., 5" class="input input-bordered w-full" required>
+                </div>
+            
+                
+            
+                <!-- Preferred Communication Method -->
+                <div class="form-control flex-1">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Preferred Communication Method <span class="text-red-400">*</span> </span>
+                    </label>
+                    <select name="communication" class="input input-bordered w-full" required>
+                        <option value="email">Email</option>
+                        <option value="phone">Phone</option>
+                    </select>
+                </div>
+            
+                <!-- Project Type -->
+                <div class="form-control flex-1">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Project Type</span>
+                    </label>
+                    <select name="projectType" class="input input-bordered w-full" required>
+                        <option value="research">Research</option>
+                        <option value="productDevelopment">Product Development</option>
+                        <option value="mentorship">Mentorship</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                </div>
+            <div class="actions flex gap-3 sticky bottom-0 bg-base-100 w-full">
+            <button type="submit"  value="draft" class="w-4/12 min-w-40 btn my-1   btn-outline  rounded-none no-animation"
+            >Save As Draft</button>
+            <button type="submit"  value="post" class="btn my-1 flex-1 btn-secondary btn-outline  rounded-none no-animation"
+            >Post Project</button>       
+            </div>
+        </form>
+        </div>
+    </div>
+</dialog>
     <script>
        
        document.addEventListener('DOMContentLoaded', () => {
@@ -44,9 +185,38 @@
         });
        const urlParts = window.location.href.split('/');
         const lastItem = urlParts[urlParts.length - 1];
-       
-    </script>
+        // Adding A New Project
+        const consultancyForm = document.getElementById('project-post');    
+        consultancyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = Object.fromEntries( new FormData(consultancyForm).entries());
+            console.log(formData);
+            formData.action = e.submitter.value;
+            const response = await fetch('/api/project', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+            console.log(data);
+            if (response.ok) {
+                alert(data.message);
+                // consultancyForm.reset();
+                // consultancy.close();
+            } else {
+                alert('Error Submitting Project');
+            }
+        });
+        
+
+</script>
 
     <script src = "/js/Logout.js"></script>
+
+
 </body>
+
 </html>

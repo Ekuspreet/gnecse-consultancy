@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/user.auth');
-router.get('/profile', authMiddleware(['alumni'], "web"), (req, res) => {
+const { getProjectsByAlumniId} = require('../../models/project.model');
+
+router.get('/profile', authMiddleware(['alumni'], "web"), async (req, res) => {
     res.render('alumni/index', {
         title: 'PROFILE',
         layout: 'layouts/alumni',
-        user: req.user
+        user: req.user,
+        drafts : await getProjectsByAlumniId(req.user.uuid,"draft"),
     });
 });
 

@@ -19,10 +19,10 @@
 
                     <div class="links flex flex-col w-full flex-1">
                         <a id="profile" class="btn no-animation btn-md  rounded-none" href="/admin/profile">Profile</a>
-                        <a id="active" class="btn no-animation btn-md  rounded-none" href="/admin/mentors">Mentors</a>
-                        <a id="active" class="btn no-animation btn-md  rounded-none" href="/admin/students">Students</a>
-                        <a id="completed" class="btn no-animation btn-md rounded-none"
-                            href="/admin/training">Testing & Consultancy Staff</a>
+                        <a id="mentors" class="btn no-animation btn-md  rounded-none" href="/admin/mentors">Mentors</a>
+                        <a id="students" class="btn no-animation btn-md  rounded-none" href="/admin/students">Students</a>
+                        <a id="tcc" class="btn no-animation btn-md rounded-none"
+                            href="/admin/tcc">Testing & Consultancy Staff</a>
                     </div>
                     <div class="bottom  h-auto bg-base-200 border-t-2 border-secondary py-4 px-2">
                         <div class="text-2xl font-semibold">
@@ -32,9 +32,9 @@
                             <%= user.role %>
                         </div>
                         <div class="divider"></div>
-                        <button class="btn btn-md  my-1 btn-success w-full" onclick="mentorAdd.showModal()">Add
+                        <button class="btn btn-md  my-1 btn-outline btn-secondary w-full no-animation" onclick="mentorAdd.showModal()">Add
                             Mentor</button>
-                        <button class="btn btn-md  my-1 btn-success w-full" onclick="trainingAdd.showModal()">Add Consultancy Staff </button>
+                        <button class="btn btn-md  my-1 btn-outline btn-secondary w-full no-animation" onclick="tccAdd.showModal()">Add Consultancy Staff </button>
                         <button class="btn btn-sm btn-outline my-1 btn-error w-full" data-role="alumni" id="logout">Log
                             Out</button>
                     </div>
@@ -103,7 +103,7 @@
 
 
         <!-- Open the modal using ID.showModal() method -->
-        <dialog id="trainingAdd" class="modal">
+        <dialog id="tccAdd" class="modal">
             <div class="modal-box">
                 <div class="flex justify-between items-center">
                     <p class="text-lg font-bold">Add A TNC Staff Account</p>
@@ -114,7 +114,7 @@
                         </form>
                 </div>
                 <div class="divider"></div>
-                <form class="space-y-4" id="add-training" data-role="training" onsubmit="AddEmployee(this,event)">
+                <form class="space-y-4" id="add-tcc" data-role="tcc" onsubmit="AddEmployee(this,event)">
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text">Full Name</span>
