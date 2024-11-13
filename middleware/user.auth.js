@@ -27,6 +27,7 @@ function authMiddleware(roles, type) {
             return;
         }
         req.user = user;
+        
         next();
     };
 }

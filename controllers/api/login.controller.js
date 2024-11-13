@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { generateToken } = require('../../services/token');
 const { verifyPassword } = require('../../services/hasher');
-const { verifyStudentByCRN } = require('../../models/student.model');
+const { verifyStudentByEmail } = require('../../models/student.model');
 const { verifyAlumniByEmail } = require('../../models/alumni.model');
 const { getTccById } = require('../../models/tcc.model');
 const { getMentorById } = require('../../models/mentor.model');
@@ -18,18 +18,21 @@ router.post('/admin', (req, res) => {
     }
     res.status(400).json({ message: 'Invalid credentials' });
 });
+
+
 router.post('/student', async (req, res) => {
-    const { crn, password } = req.body;
+    const { email, password } = req.body;
     console.log(req.body);
     
-    const student = await verifyStudentByCRN(crn);
+    const student = await verifyStudentByEmail(email);
     console.log(student);
-    if (student.error) {
+    if (student?.error) {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
     }
 
     const passwordMatch = verifyPassword(password, student.passhash);
+   
     if (!passwordMatch) {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
@@ -66,7 +69,7 @@ router.post('/tcc', async (req, res) => {
     const { employeeid, password } = req.body;
     console.log(req.body);
     
-    const tcc = await gettccById(employeeid);
+    const tcc = await getTccById(employeeid);
     console.log(tcc);
     if (tcc.error) {
         res.status(400).json({ message: 'Invalid credentials' });

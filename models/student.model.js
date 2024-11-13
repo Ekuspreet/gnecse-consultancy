@@ -4,7 +4,7 @@ const { hashPassword } = require('../services/hasher');
 // Function to get a list of all students.
 const getAllStudents = async () => {   
     try {
-        const students = await Student.find({ role: 'student' });
+        const students = await Student.find({});
         return students;
     } catch (err) {
         return {'error': err};
@@ -14,7 +14,7 @@ const getAllStudents = async () => {
 // Function to get a specific student by their ID.
 const getStudentById = async (uuid) => {
     try {
-        const student = await Student.findById(uuid);
+        const student = await Student.find({uuid});
         return student;
     } catch (err) {
         return {'error': err};
@@ -23,13 +23,13 @@ const getStudentById = async (uuid) => {
 
 // Function to create a new student.
 const createStudent = async (studentData) => {
-    const { name, email, password, crn } = studentData;
+    const { name, email, password  } = studentData;
     const passhash = await hashPassword(password);
     const newStudent = new Student({
         name,
         email,
         passhash,
-        crn,
+
     });
     try {
         const savedStudent = await newStudent.save();
@@ -49,20 +49,31 @@ const deleteStudentById = async (uuid) => {
     }
 };
 
-// Verify if student exists by crn
-const verifyStudentByCRN = async (crn) => {
+
+
+const verifyStudentByEmail = async (email) => {
     try {
-        const student = await Student.findOne({ crn : crn , role : 'student' });
+        const student = await Student.findOne({ email });
         return student;
-    } catch (err) {
-        return {'error': err};
+    }
+    catch (error) {
+        return { error : error};
     }
 };
+
+const getIncomingRequests = async (uuid) => {
+    try {
+        const student = await Student.findById(uuid);
+        return student.incomingRequests;
+    } catch (error) {
+        return { error };
+    }
+}
 
 module.exports = {
     getAllStudents,
     getStudentById,
     createStudent,
     deleteStudentById,
-    verifyStudentByCRN
+    verifyStudentByEmail
 };

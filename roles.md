@@ -3,5 +3,5 @@
 ## Administration - "admin"
 ## Alumni Network - "alumni"
 ## Mentors(Teachers) - "mentor"
-## Training And Placement Cell Staff - "training"
+## Testing and Consultancy Cell Staff - "tcc"
 ## Students - "student"

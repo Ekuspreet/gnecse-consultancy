@@ -22,6 +22,16 @@ const getMentorById = async (employeeid) => {
     }
 };
 
+const getMentor = async (uuid) => {
+    try {
+        const mentor = await Staff.findOne({uuid, role: 'mentor'});
+        return mentor;
+    } catch (err) {
+        return {'error': err};
+    }
+};
+
+
 // Function to create a new mentor.
 const addMentor = async (mentorData) => {
     const { name, email, phone, password, employeeid } = mentorData;
@@ -60,6 +70,7 @@ const deleteMentorById = async (uuid) => {
 
 module.exports = {
     getAllMentors,
+    getMentor,
     getMentorById,
     addMentor,
     deleteMentorById,

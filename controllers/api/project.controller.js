@@ -1,22 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/user.auth');
-const {addProject} = require('../../models/project.model');
+const {addProject, updateProject, approveProject, rejectProject, assignProjectToMentor, getStudentsByProjectId, getRequestedStudentsByProjectId, assignProjectToStudent, joinProjectByStudent, leaveProjectByStudent} = require('../../models/project.model');
+const {getAllStudents} = require('../../models/student.model');
 
-router.post('/', authMiddleware(['alumni'], "web"), async (req, res) => {
-    console.log(req.body);    
-    console.log(req.body.action);
+router.post('/', authMiddleware(['alumni'], "api"), async (req, res) => {    
     let status = "";
     if(req.body.action == "post"){
         status = "pending";
-    }else if(req.body.action == "draft"){
+    }
+    if(req.body.action == "draft"){
         status = "draft";
     }
 
     delete req.body.action;
 
-    const project = await addProject(req.user.uuid,req.body, status);
-
+    const project = await addProject(req.user.uuid,req.body,status);
+    console.log(project)
     if (project.error) {
         return res.status(400).json({ message: `Cannot Create Project`,});
     }
@@ -24,9 +24,9 @@ router.post('/', authMiddleware(['alumni'], "web"), async (req, res) => {
 
 });
 
-router.post('/:puid', authMiddleware(['alumni'], "web"), async (req, res) => {
-    console.log(req.body);
-    const project = await addProject(req.user.uuid,req.body,req.params.puid);
+router.post('/:puid', authMiddleware(['alumni'], "api"), async (req, res) => {
+    
+    const project = await updateProject(req.params.puid,req.body,"pending");
     if (project.error) {
         return res.status(400).json({ message: `Cannot Create Project`,});
     }
@@ -34,12 +34,106 @@ router.post('/:puid', authMiddleware(['alumni'], "web"), async (req, res) => {
     return;
 });
 
-router.put('/:puid', authMiddleware(['alumni'], "web"), async (req, res) => {   
-    const project = await addProject(req.user.uuid,req.body,req.params.puid);
+router.put('/:puid', authMiddleware(['alumni'], "api"), async (req, res) => {   
+    const project = await updateProject(req.params.puid,req.body,"draft");
     if (project.error) {
         return res.status(400).json({ message: `Cannot Update Project`,});
     }
     res.status(200).json({ message: `Project updated successfully!` });
     return;
+});
+
+router.post('/approve/:puid', authMiddleware(['tcc'], "api"), async (req, res) => {
+    console.log(req.params.puid);
+    const project = await approveProject(req.params.puid);
+    if (project.error) {
+        console.log("This is being called ");
+        return res.status(400).json({ message: `Cannot Approve Project`,});
+    }
+    
+    console.log(project);
+    res.status(200).json({ message: `Project Approved successfully!` });
+    return;
+});
+
+router.post('/reject/:puid', authMiddleware(['tcc'], "api"), async (req, res) => {
+    const project = await rejectProject(req.params.puid);
+    if (project.error) {
+        return res.status(400).json({ message: `Cannot Reject Project`,});
+    }
+    res.status(200).json({ message: `Project rejected successfully!` });
+    return;
+});
+
+router.post('/assign/:puid' , authMiddleware(['mentor'], "api"), async (req,res) =>{
+    const puid = req.params.puid;    
+    console.log(req.user.uuid)
+    const assigned = await assignProjectToMentor(puid, req.user.uuid);
+
+    if(assigned.error){
+        return res.status(400).json({ message: `Cannot Assign Project`,});
+    };
+    return res.status(200).json({ message: `Project assigned successfully!` });
+})
+
+router.get('/invite/:puid', authMiddleware(['mentor'], "api"), async (req, res) => {
+    const invited = await getStudentsByProjectId(req.params.puid);
+    if(invited.error){
+        return res.status(400).json({ message: `Cannot Fetch Students`,});
+    }
+    console.log(invited);
+
+    const requested = await getRequestedStudentsByProjectId(req.params.puid);
+    if(requested.error){
+        return res.status(400).json({ message: `Cannot Fetch Students`,});
+    }
+    console.log(requested);
+
+    const students = await getAllStudents();
+    if (students.error) {
+        return res.status(400).json({ message: `Cannot Fetch Students`,});
+    }
+
+    const filteredStudents = students.filter(student => 
+    !invited.some(invitedStudent => invitedStudent === student.uuid) &&
+    !requested.some(requestedStudent => requestedStudent === student.uuid)
+    );
+    // console.log(filteredStudents); 
+return res.status(200).json({ message: `Students Fetched`, students: filteredStudents });
+
+});
+
+router.post('/invite/:puid/', authMiddleware(['mentor'], "api"), async (req, res) => {
+    const puid = req.params.puid;
+    const student = req.body.uuid;
+    const mentor = req.user.uuid;
+    console.log(puid,student,mentor);
+    const assigned = await assignProjectToStudent(puid,mentor,student);
+    console.log(assigned);
+
+    if(assigned.error){
+        return res.status(400).json({ message: `Cannot Assign Project`,});
+    };
+    return res.status(200).json({ message: `Project assigned successfully!` });
+});
+
+router.post('/student/accept/:puid', authMiddleware(['student'], "api"), async (req, res) => {
+    const puid = req.params.puid;
+    const student = req.user.uuid;
+    const joined = await joinProjectByStudent(puid,student);
+    if(joined.error){
+        return res.status(400).json({ message: `Cannot Assign Project`,});
+    };
+    return res.status(200).json({ message: `Project assigned successfully!` });
+});
+
+router.post('/student/reject/:puid', authMiddleware(['student'], "api"), async (req, res) => {
+    const puid = req.params.puid;
+    const student = req.user.uuid;
+    const left = await leaveProjectByStudent(puid,student);
+    if(left.error){
+        return res.status(400).json({ message: `Cannot Assign Project`,});
+    };
+    return res.status(200).json({ message: `Project assigned successfully!` });
 });
 module.exports = router;

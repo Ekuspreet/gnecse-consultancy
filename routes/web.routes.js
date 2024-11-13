@@ -4,6 +4,8 @@ const authController = require('../controllers/web/auth.controller');
 const studentController = require('../controllers/web/student.controller');
 const alumniController = require('../controllers/web/alumni.controller');
 const adminController = require('../controllers/web/admin.controller');
+const tccController = require('../controllers/web/tcc.controller');
+const mentorController = require('../controllers/web/mentor.controller');
 
 module.exports = function(app) {
     // Landing Page
@@ -20,4 +22,10 @@ module.exports = function(app) {
 
     // Pages for the admin
     app.use('/admin', adminController);
+
+    // Pages for the tcc
+    app.use('/tcc', tccController);
+
+    // Pages for the mentor
+    app.use('/mentor', mentorController);
 }

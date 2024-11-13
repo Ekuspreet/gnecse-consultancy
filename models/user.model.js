@@ -35,10 +35,6 @@ const baseSchema = new Schema({
 
 const studentSchema = new Schema({
   ...baseSchema.obj,
-  crn: {
-    type: String,
-    required: [true, "Class Roll Number is required for students."],
-  },
 });
 
 const Student = mongoose.model("Student", studentSchema);
@@ -59,10 +55,11 @@ const staffSchema = new Schema({
     type: String,
     required: true,
     enum: ["tcc", "mentor"],
-  },
+  },  
   employeeid: {
     type: String,
     required: [true, "Employee ID is required for staff."],
+    unique: true,
   },
 });
 

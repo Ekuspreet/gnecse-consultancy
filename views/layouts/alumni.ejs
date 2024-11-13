@@ -17,6 +17,7 @@
 
             <div class="links flex flex-col w-full flex-1">
                 <a id="profile" class="btn no-animation btn-md  rounded-none" href="/alumni/profile">Profile</a>
+                <a id="pending" class="btn no-animation btn-md  rounded-none" href="/alumni/pending">Pending</a>
                 <a id="active" class="btn no-animation btn-md  rounded-none" href="/alumni/active">Active Jobs</a>
                 <a id="completed" class="btn no-animation btn-md rounded-none" href="/alumni/completed">Completed Jobs</a>
             </div>
@@ -204,8 +205,13 @@
             console.log(data);
             if (response.ok) {
                 alert(data.message);
-                // consultancyForm.reset();
-                // consultancy.close();
+                consultancyForm.reset();
+                if(e.submitter.value == "draft"){
+                    window.location.reload();
+                }
+                if(e.submitter.value == "post"){
+                    window.location.href = '/alumni/pending';
+                }
             } else {
                 alert('Error Submitting Project');
             }

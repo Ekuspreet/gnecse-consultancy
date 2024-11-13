@@ -1,0 +1,134 @@
+<!-- <%= projects %> -->
+
+<div class="p-3 font-bold text-2xl">Team Building For Projects</div>
+
+<div class="m-3">
+    <% projects.forEach( function(project){ %>
+        <%- include('../partials/project.team.ejs', { project: project, }) %>
+            <% }); %>
+            <% if (projects.length == 0) { %>
+                <div class="p-3 text-center text-2xl font-semibold">No Projects Availible</div>
+            <% } %>
+
+</div>
+<dialog id="inviteModal" class="modal">
+    <div class="modal-box p-3 w-auto max-h-[50em]" style="max-width: none;">
+        <div class="header flex items-center justify-between">
+            <h2 class="text-lg font-bold" id="modal-heading">Invite Student To Project</h2>
+            <form method="dialog">
+                <button class="link link-error">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </button>
+            </form>
+        </div>
+        <div class="divider"></div>
+        <div class="modal-body">
+            
+            <div class="users flex flex-col gap-2">
+            
+            </div>
+        </div>
+    </div>
+</dialog>
+<!-- Student Invitation Modal -->
+
+<script>
+
+    
+async function inviteStudent(button) {
+    const puid = button.dataset.puid;
+    const inviteModal = document.getElementById('inviteModal');
+    
+    const response = await fetch(`/api/project/invite/${puid}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+        console.log(data.students);      
+    }
+
+    const students = data.students;
+    inviteModal.querySelector('.users').innerHTML = ''; // Clear any previous content
+
+    if (students.length === 0) {
+        const noStudentsMessage = document.createElement('div');
+        noStudentsMessage.classList.add('p-3', 'text-center', 'text-2xl', 'font-semibold');
+        noStudentsMessage.innerText = 'No Students Available';
+        inviteModal.querySelector('.users').appendChild(noStudentsMessage);
+    } else {
+        students.forEach(student => {
+            const user = document.createElement('div');
+            user.classList.add('flex', 'items-center', 'justify-between', 'p-5', 'border', 'rounded-none', 'gap-2');
+            
+            const username = document.createElement('span');
+            username.innerHTML = student.name;
+            const useremail = document.createElement('span');
+            useremail.innerHTML = student.email;
+            user.appendChild(username);
+            user.appendChild(useremail);
+            
+            const inviteButton = document.createElement('button');
+            inviteButton.classList.add('btn', 'btn-sm', 'btn-success', 'btn-outline', 'rounded-none', 'no-animation');
+            inviteButton.innerText = 'Invite';
+            inviteButton.dataset.uuid = student.uuid;
+            inviteButton.dataset.puid = puid;
+            
+            // Add click event listener to the invite button
+            inviteButton.addEventListener('click', async () => {
+                const puid = inviteButton.dataset.puid;
+                await handleInviteClick(student.uuid, puid);
+            });
+            
+            user.appendChild(inviteButton);
+            inviteModal.querySelector('.users').appendChild(user);
+        });
+    }
+
+    inviteModal.showModal();
+}
+
+// Function to handle the invite button click event
+async function handleInviteClick(uuid, puid) {
+    // Perform actions when the invite button is clicked, e.g., send an invite request
+    console.log(`Invite button clicked for student with UUID: ${uuid}`);
+    
+    // Here, you could make an API call to invite the student or any other action
+    const response = await fetch(`/api/project/invite/${puid}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            uuid: uuid,
+        }),
+    });
+
+    if(response.ok){
+        alert('Invitation Sent');
+        window.location.reload();
+    } else {
+        alert('Error Sending Invitation');
+    }
+}
+
+async function startWorking(button){
+    const puid = button.dataset.puid;
+    // mentor's start request
+    const response = await fetch(`/api/project/startrequest/${puid}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+}
+
+
+</script>

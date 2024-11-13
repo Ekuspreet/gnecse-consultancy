@@ -43,13 +43,9 @@ const addTcc = async (TccData) => {
 };
 
 // Function to delete a Tcc by their ID.
-const deleteTccById = async (employeeid, role) => {
-    try {
-        const userToDelete = await Staff.findOne({ role: role, employeeid: employeeid });
-        if (!userToDelete) {
-            return { error: 'User not found' };
-        }
-        const removedUser = await Staff.deleteOne({ role: role, employeeid: employeeid });
+const deleteTccById = async (uuid) => {
+try{
+        const removedUser = await Staff.deleteOne({ role: "tcc", uuid });
         return removedUser;
     } catch (err) {
         return {'error': err};

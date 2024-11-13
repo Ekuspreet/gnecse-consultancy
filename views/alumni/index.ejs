@@ -20,7 +20,7 @@
 <% } else { %>
     <div class="flex flex-wrap gap-3 p-3">
     <% drafts.forEach(function(draft) { %>
-        <%- include('../partials/project.ejs', {
+        <%- include('../partials/project.draft.ejs', {
             project: draft,
         }) %>
     <% }); %>
@@ -168,6 +168,7 @@
 
 <script>
     const editForm = document.getElementById('project-edit');
+    
     function editProject(puid,data,button){
         const projectData = JSON.parse(data);
         delete projectData.action;
@@ -177,14 +178,15 @@
             input.value = projectData[key];
             }
         });
-        
         projectedit.showModal();
+        editForm.setAttribute('puid', puid)
      
     }
     
     
     editForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        console.log(editForm.getAttribute('puid'));
         const formData = new FormData(editForm);
         const data = Object.fromEntries(formData.entries());
         var action = "";
@@ -196,7 +198,7 @@
             action = "POST";
         }
         
-        const response = await fetch(`/api/project/${data.puid}`, {
+        const response = await fetch(`/api/project/${editForm.getAttribute('puid')}`, {
             method: action,
             headers: {
                 'Content-Type': 'application/json',
@@ -204,16 +206,13 @@
             body: JSON.stringify(data),
         });
 
-        
-
-        if(action == "draft"){
-            // Save as draft
-            console.log("Draft saved",data);
+        if (response.ok) {
+            const data  = await response.json();
+            window.location.reload();
+            alert(data.message);
+        } else {
+            alert('Failed to save the project');
         }
-
-        if(action == "post"){
-            // Post the project
-            console.log("Project posted",data);
-        }
+    
     });
 </script>

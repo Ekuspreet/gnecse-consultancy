@@ -4,6 +4,7 @@ const mentorController = require('../controllers/api/mentor.controller');
 const tccController = require('../controllers/api/tcc.controller');
 const alumniController = require('../controllers/api/alumni.controller');
 const projectController = require('../controllers/api/project.controller');
+const studentController = require('../controllers/api/student.controller');
 
 module.exports = function(app) {
     app.use('/api/login', loginController);
@@ -12,4 +13,5 @@ module.exports = function(app) {
     app.use('/api/tcc', tccController);
     app.use('/api/alumni', alumniController);
     app.use('/api/project', projectController);
+    app.use('/api/student', studentController);
 }

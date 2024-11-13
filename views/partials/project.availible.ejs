@@ -1,0 +1,94 @@
+
+<div class="collapse collapse-arrow bg-base-200 rounded-none border border-emerald-300 gap-1 my-2">
+    <input type="checkbox" id="collapse-= question.questionId %>" />
+    <div class="collapse-title text-xl font-medium flex justify-between">
+        <div>
+            <div class="badge bg-emerald-500">
+                <%= project.puid %> 
+            </div>
+            <%= project.data.title%> | Approved : <%= project.approvedAt.toLocaleDateString() %>
+        </div>
+
+        <div>
+            <div class="actions">
+                <!-- Add Buttons Here  -->
+              
+
+                <button class="btn btn-outline btn-sm btn-secondary " data-puid = "<%= project.puid %>" onclick="adoptProject(this)">Start Making Team</button>
+            </div>
+        </div>
+    </div>
+    <div class="collapse-content">
+        <!-- project-output.ejs -->
+<!-- project-output.ejs -->
+<div class="p-5">
+    <div class="grid gap-2 text-left">
+        
+        <!-- Project Title -->
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Project Title:</span>
+            <span class="text-md flex-1"><%= project.data.title %></span>
+        </div>
+
+        <!-- Project Description -->
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Project Description:</span>
+            <span class="text-md flex-1"><%= project.data.description %></span>
+        </div>
+
+        <!-- Tech Stack and Skills Required -->
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Tech Stack:</span>
+            <span class="text-md flex-1"><%= project.data.techStack || 'Not specified' %></span>
+        </div>
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Skills Required:</span>
+            <span class="text-md flex-1"><%= project.data.skills || 'Not specified' %></span>
+        </div>
+
+        <!-- Dates -->
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Proposed Start Date:</span>
+            <span class="text-md flex-1"><%= project.data.startDate %></span>
+        </div>
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Project Deadline:</span>
+            <span class="text-md flex-1"><%= project.data.deadline %></span>
+        </div>
+
+        <!-- Features, Objectives, Expected Outcomes -->
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Features:</span>
+            <span class="text-md flex-1"><%= project.data.features || 'Not specified' %></span>
+        </div>
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Objectives:</span>
+            <span class="text-md flex-1"><%= project.data.objectives || 'Not specified' %></span>
+        </div>
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Expected Outcomes:</span>
+            <span class="text-md flex-1"><%= project.data.outcomes || 'Not specified' %></span>
+        </div>
+
+        <!-- Consulting Hours and Communication Method -->
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Consulting Hours per Week:</span>
+            <span class="text-md flex-1"><%= project.data.consultingHours %> hours</span>
+        </div>
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Preferred Communication Method:</span>
+            <span class="text-md flex-1"><%= project.data.communication %></span>
+        </div>
+
+        <!-- Project Type -->
+        <div class="flex items-center">
+            <span class="font-semibold text-lg w-1/3">Project Type:</span>
+            <span class="text-md flex-1"><%= project.data.projectType %></span>
+        </div>
+    </div>
+</div>
+
+
+    </div>
+
+</div>

@@ -12,6 +12,16 @@ router.get('/profile', authMiddleware(['alumni'], "web"), async (req, res) => {
     });
 });
 
+router.get('/pending', authMiddleware(['alumni'], "web"), async (req, res) => {
+    res.render('alumni/pending', {
+        title: 'PENDING FOR APPROVAL',
+        layout: 'layouts/alumni',
+        user: req.user,
+        pending : await getProjectsByAlumniId(req.user.uuid,"pending"),
+    });
+});
+
+
 router.get('/active', authMiddleware(['alumni'], "web"), (req, res) => {
     res.render('alumni/active', {
         title: 'ACTIVE JOBS',

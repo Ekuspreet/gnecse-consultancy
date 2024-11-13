@@ -1,5 +1,5 @@
 
-<div class="card rounded-none flex-1 md:min-w-96 bg-base-200 text-white w-96 border  border-gray-300">
+<div class="card rounded-none flex-1 md:min-w-96 bg-base-200 text-gray-200 w-96 border  border-gray-600">
     <div class="card-body">
       <div class="annotations flex gap-2">
         <div class="badge bg-gray-300 text-black font-bold"><%= project.status %></div>
@@ -9,7 +9,7 @@
       <p><%= project.data.description %></p>
       <div class="actions flex gap-3  w-full">
         <button type="submit" name="action" value="draft" class=" min-w-40 btn my-1   btn-outline  rounded-none no-animation"
-         onclick="editProject('<%= project.uuid %>','<%= JSON.stringify(project.data) %>',this)"> Edit</button>
+         onclick="editProject('<%= project.puid %>','<%= JSON.stringify(project.data) %>',this)"> Edit</button>
         
         </div>
     </div>
