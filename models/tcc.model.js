@@ -15,7 +15,7 @@ const getAllTccStaff = async () => {
 // Function to get a specific Tcc by their ID.
 const getTccById = async (employeeid) => {
     try {
-        const user = await Staff.findOne({employeeid : employeeid});
+        const user = await Staff.findOne({employeeid : employeeid , role: 'tcc'});
         return user;
     } catch (err) {
         return {'error': err};

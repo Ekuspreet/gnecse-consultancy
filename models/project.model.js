@@ -36,7 +36,7 @@ const projectSchema = new mongoose.Schema({
     default: null,
   },
   completedAt: {
-    type: Boolean,
+    type: Date,
     default: null,
   },
   data: {
@@ -46,7 +46,11 @@ const projectSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ["draft", "pending", "approved", "assigned","active", "completed", "rejected"],
+    enum: ["draft", "pending", "approved", "assigned", "active", "completed","submitted"]
+  },
+  submission: {
+    type: Object,
+    default: null,
   },
 });
 
@@ -165,7 +169,16 @@ const rejectProject = async (puid) => {
 
 const getProjectsByMentorId = async (uuid) => {
   try {
-    const project = await Project.find({ mentor: uuid });
+    const project = await Project.find({ mentor: uuid , status : "assigned"});
+    return project;
+  } catch (error) {
+    return { error };
+  }
+};
+
+const getActiveProjectsByMentorId = async (uuid) => {
+  try {
+    const project = await Project.find({ mentor: uuid , status : "active"});
     return project;
   } catch (error) {
     return { error };
@@ -247,6 +260,78 @@ const leaveProjectByStudent = async (puid, student) => {
     return { error };
   }
 }
+
+const startProject = async (puid) => {
+  try {
+    const result = await Project.updateOne(
+      { status: "assigned", puid },
+      { status: "active" }
+    );
+    console.log(result);
+    if (result.matchedCount === 0) {
+      return { error: "Project not found or already active" };
+    }
+    return result;
+  } catch (error) {
+    return { error };
+  }
+};
+
+const completeProject = async (puid,submission) => {
+  try {
+    const result = await Project.updateOne(
+      { puid : puid , status : "active" },
+      { status: "completed", completedAt: Date.now(), submission: submission }
+    );
+    console.log(result);
+    if (result.matchedCount === 0) {
+      return { error: "Project not found or already completed" };
+    }
+    return result;
+  } catch (error) {
+    return { error };
+  }
+}
+
+const submitProject = async (puid) => {
+  try {
+    const result = await Project.updateOne(
+      { status: "active", puid },
+      { status: "submitted"}
+    );
+    if (result.matchedCount === 0) {
+      return { error: "Project not found or already submitted" };
+    }
+    return result;
+  } catch (error) {
+    return { error };
+  }
+}
+
+const rejectSubmission = async (puid) => {
+  try {
+    const result = await Project.updateOne(
+      { status: "completed", puid },
+      { status: "active"}
+    );
+    if (result.matchedCount === 0) {
+      return { error: "Project not found or already active" };
+    }
+    return result;
+  } catch (error) {
+    return { error };
+  }
+}
+
+const getSubmittedProjects = async () => {
+  try {
+    const project = await Project.find({ status: "submitted" });
+    return project;
+  } catch (error) {
+    return { error };
+  }
+}
+
 module.exports = {
   addProject,
   getAllProjects,
@@ -264,4 +349,10 @@ module.exports = {
   getRequestsByStudentId,
   joinProjectByStudent,
   leaveProjectByStudent,
+  startProject,
+  completeProject,
+  submitProject,
+  rejectSubmission,
+  getActiveProjectsByMentorId,
+  getSubmittedProjects,
 };

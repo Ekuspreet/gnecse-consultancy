@@ -121,12 +121,21 @@ async function handleInviteClick(uuid, puid) {
 async function startWorking(button){
     const puid = button.dataset.puid;
     // mentor's start request
-    const response = await fetch(`/api/project/startrequest/${puid}`, {
+    const response = await fetch(`/api/project/start/${puid}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
     });
+
+    const data = await response.json();
+    console.log(data);
+    if(response.ok){
+        alert('Project Started');
+        window.location.reload();
+    } else {
+        alert('Error Starting Project');
+    }
 
 }
 

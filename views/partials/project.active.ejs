@@ -1,9 +1,9 @@
-<div class="collapse collapse-arrow bg-base-200 rounded-none border border-emerald-300 gap-1 my-2">
+<div class="collapse collapse-arrow bg-base-200 rounded-none border border-green-600 gap-1 my-2">
     <input type="checkbox" id="collapse-= question.questionId %>" />
     <div class="collapse-title text-xl font-medium flex justify-between">
         <div>
-            <div class="badge p-4 bg-emerald-500">
-                <%= project.puid %>
+            <div class="badge p-4 bg-green-500">
+                #<%= project.puid %>
             </div>
             <%= project.data.title%> | Approved : <%= project.approvedAt.toLocaleDateString() %>
         </div>
@@ -13,17 +13,15 @@
                 <!-- Add Buttons Here  -->
 
 
-                <button class="btn btn-outline btn-sm btn-secondary rounded-none" data-puid="<%= project.puid %>"
-                    onclick="inviteStudent(this)">Invite Students</button>
-
                 <button class="btn btn-outline btn-sm btn-success rounded-none" data-puid="<%= project.puid %>"
-                    onclick="startWorking(this)">Start Working!</button>
+                    onclick="completeProject(this)">Complete Project</button>
+
             </div>
         </div>
     </div>
     <div class="collapse-content">
         <div class="interested">
-            <div class="p-3 font-semibold text-xl">Students Ready To Contribute</div>
+            <div class="p-3 font-semibold text-xl">Students Contributing</div>
             <% if (project.students.length==0) { %>
                 <div class="p-3 text-center text-md font-semibold">No Students Contributing As Of Now. Invite Some.</div>
             <% } else { %>
@@ -41,24 +39,7 @@
             <% } %>
         </div>
         
-        <div class="requested">
-            <div class="p-3 font-semibold text-xl">Requests Sent To</div>
-            <% if (project.requests.length==0) { %>
-                <div class="p-3 text-center text-md font-semibold">No Students Have Received Any Requests So Far. Invite Some.</div>
-            <% } else { %>
-                <div class="p-3 space-y-2" id="requests-container">
-                    <% project.requests.forEach(function(student) { %>
-                        <div class="student-entry flex items-center gap-2 p-2 border border-gray-300 rounded-lg"
-                             data-uuid="<%= student %>">
-                            <span class="student-details">
-                                <!-- Placeholder text until AJAX request fills details -->
-                                Loading...
-                            </span>
-                        </div>
-                    <% }); %>
-                </div>
-            <% } %>
-        </div>
+        
         
 
     </div>

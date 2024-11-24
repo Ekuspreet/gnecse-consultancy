@@ -1,4 +1,4 @@
-const express = require('express');
+
 const {Staff} = require('./user.model');
 const { hashPassword } = require('../services/hasher');
 
@@ -15,7 +15,7 @@ const getAllMentors = async () => {
 // Function to get a specific mentor by their ID.
 const getMentorById = async (employeeid) => {
     try {
-        const mentor = await Staff.findOne({employeeid : employeeid});
+        const mentor = await Staff.findOne({employeeid : employeeid , role: 'mentor'});
         return mentor;
     } catch (err) {
         return {'error': err};

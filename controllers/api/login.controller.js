@@ -7,7 +7,6 @@ const { verifyAlumniByEmail } = require('../../models/alumni.model');
 const { getTccById } = require('../../models/tcc.model');
 const { getMentorById } = require('../../models/mentor.model');
 
-
 router.post('/admin', (req, res) => {
     const { username, password } = req.body;
     if(username == process.env.ADMIN_USERNAME && password == process.env.ADMIN_PASSWORD) {
@@ -19,14 +18,17 @@ router.post('/admin', (req, res) => {
     res.status(400).json({ message: 'Invalid credentials' });
 });
 
-
 router.post('/student', async (req, res) => {
     const { email, password } = req.body;
     console.log(req.body);
     
     const student = await verifyStudentByEmail(email);
     console.log(student);
-    if (student?.error) {
+    if (!student) {
+        res.status(400).json({ message: 'No account exists' });
+        return;
+    }
+    if (student.error) {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
     }
@@ -49,6 +51,10 @@ router.post('/alumni', async (req, res) => {
     
     const alumni = await verifyAlumniByEmail(email); 
     console.log(alumni);
+    if (!alumni) {
+        res.status(400).json({ message: 'No account exists' });
+        return;
+    }
     if (alumni.error) {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
@@ -71,6 +77,10 @@ router.post('/tcc', async (req, res) => {
     
     const tcc = await getTccById(employeeid);
     console.log(tcc);
+    if (!tcc) {
+        res.status(400).json({ message: 'No account exists' });
+        return;
+    }
     if (tcc.error) {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
@@ -93,12 +103,17 @@ router.post('/mentor', async (req, res) => {
     
     const mentor = await getMentorById(employeeid);
     console.log(mentor);
+    if (!mentor) {
+        res.status(400).json({ message: 'No account exists' });
+        return;
+    }
     if (mentor.error) {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
     }
 
     const passwordMatch = verifyPassword(password, mentor.passhash);
+    
     if (!passwordMatch) {
         res.status(400).json({ message: 'Invalid credentials' });
         return;
@@ -108,4 +123,5 @@ router.post('/mentor', async (req, res) => {
     res.cookie('auth-token', token, { httpOnly: true, secure: true });
     res.json({ message: `Login successful for UUID: ${mentor.uuid}` });
 });
+
 module.exports = router;

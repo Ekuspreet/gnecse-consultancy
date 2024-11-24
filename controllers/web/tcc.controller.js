@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/user.auth');
-const { getPendingProjects } = require('../../models/project.model');
+const { getPendingProjects , getActiveProjects, getSubmittedProjects } = require('../../models/project.model');
 
 router.get('/profile', authMiddleware(['tcc'], "web"), async (req, res) => {
     res.render('tcc/index', {

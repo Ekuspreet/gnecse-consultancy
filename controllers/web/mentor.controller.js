@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/user.auth');
-const { getAvailibleProjects, getProjectsByMentorId } = require('../../models/project.model');
+const { getAvailibleProjects, getProjectsByMentorId, getActiveProjectsByMentorId, getSubmittedProjects } = require('../../models/project.model');
 
 router.get('/profile', authMiddleware(['mentor'], "web"), async (req, res) => {
     const projects = await getAvailibleProjects();
@@ -16,10 +16,12 @@ router.get('/profile', authMiddleware(['mentor'], "web"), async (req, res) => {
 
 
 router.get('/project', authMiddleware(['mentor'], "web"), async (req, res) => {
+    const projects = await getActiveProjectsByMentorId(req.user.uuid);
     res.render('mentor/project', {
-        title: 'START A PROJECT',
+        title: 'ACTIVE PROJECTS',
         layout: 'layouts/mentor',
         user: req.user,
+        projects : projects,
         
     });
 });
@@ -28,7 +30,7 @@ router.get('/team', authMiddleware(['mentor'], "web"), async (req, res) => {
     const projects = await getProjectsByMentorId(req.user.uuid);
     
     res.render('mentor/team', {
-        title: 'MAKE A TEAM',
+        title: 'FORM A TEAM WITH STUDENTS',
         layout: 'layouts/mentor',
         user: req.user,
         projects : projects,    
@@ -36,11 +38,13 @@ router.get('/team', authMiddleware(['mentor'], "web"), async (req, res) => {
 });
 
 
-router.get('/submit', authMiddleware(['mentor'], "web"), (req, res) => {
+router.get('/submit', authMiddleware(['mentor'], "web"), async (req, res) => {
+    const projects = await getSubmittedProjects();
     res.render('mentor/submit', {
-        title: 'SUBMISSION OF WORK DONE',
+        title: 'SUBMISSIONS OF WORK DONE',
         layout: 'layouts/mentor',
-        user: req.user
+        user: req.user,
+        projects : projects,
     });
 });
 

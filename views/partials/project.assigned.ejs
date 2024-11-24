@@ -1,24 +1,20 @@
 
-<div class="collapse collapse-arrow bg-base-200 rounded-none border border-teal-300 gap-1 my-2">
+<div class="collapse collapse-arrow bg-base-200 rounded-none border border-emerald-300 gap-1 my-2">
     <input type="checkbox" id="collapse-= question.questionId %>" />
     <div class="collapse-title text-xl font-medium flex justify-between">
         <div>
-            <div class="badge p-4 bg-teal-500">
-                <%= project.puid %>
+            <div class="badge p-4 bg-emerald-500">
+                <%= project.puid %> 
             </div>
-            <%= project.data.title%>
+            <%= project.data.title%> | Approved : <%= project.approvedAt.toLocaleDateString() %>
         </div>
 
         <div>
             <div class="actions">
                 <!-- Add Buttons Here  -->
-                <button class="btn btn-outline btn-sm btn-success" data-puid = "<%= project.puid %>" onclick="contribute(this)"><span class="material-symbols-outlined">
-                    check
-                    </span> Contribute</button>
+              
 
-                <button class="btn btn-outline btn-sm btn-error" data-puid = "<%= project.puid %>" onclick="rejectContribution(this)"><span class="material-symbols-outlined">
-                    close
-                    </span> Reject</button>
+                <button class="btn btn-outline btn-sm btn-secondary " data-puid = "<%= project.puid %>" onclick="adoptProject(this)">Start Making Team</button>
             </div>
         </div>
     </div>

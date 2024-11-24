@@ -1,0 +1,35 @@
+<!-- <%= projects %> -->
+
+<div class="p-3 font-bold text-2xl">Team Building For Projects</div>
+
+<div class="m-3">
+    <% projects.forEach( function(project){ %>
+        <%- include('../partials/project.team.ejs', { project: project, }) %>
+            <% }); %>
+            <% if (projects.length == 0) { %>
+                <div class="p-3 text-center text-2xl font-semibold">No Projects Availible</div>
+            <% } %>
+
+</div>
+<dialog id="inviteModal" class="modal">
+    <div class="modal-box p-3 w-auto max-h-[50em]" style="max-width: none;">
+        <div class="header flex items-center justify-between">
+            <h2 class="text-lg font-bold" id="modal-heading">Invite Student To Project</h2>
+            <form method="dialog">
+                <button class="link link-error">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </button>
+            </form>
+        </div>
+        <div class="divider"></div>
+        <div class="modal-body">
+            
+            <div class="users flex flex-col gap-2">
+            
+            </div>
+        </div>
+    </div>
+</dialog>
+<!-- Student Invitation Modal -->

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/user.auth');
-const {addProject, updateProject, approveProject, rejectProject, assignProjectToMentor, getStudentsByProjectId, getRequestedStudentsByProjectId, assignProjectToStudent, joinProjectByStudent, leaveProjectByStudent} = require('../../models/project.model');
+const {addProject, updateProject, approveProject, rejectProject, assignProjectToMentor, getStudentsByProjectId, getRequestedStudentsByProjectId, assignProjectToStudent, joinProjectByStudent, leaveProjectByStudent, startProject, completeProject, rejectSubmission, submitProject } = require('../../models/project.model');
 const {getAllStudents} = require('../../models/student.model');
 
 router.post('/', authMiddleware(['alumni'], "api"), async (req, res) => {    
@@ -136,4 +136,50 @@ router.post('/student/reject/:puid', authMiddleware(['student'], "api"), async (
     };
     return res.status(200).json({ message: `Project assigned successfully!` });
 });
+
+router.post('/start/:puid', authMiddleware(['mentor'], "api"), async (req, res) => {
+    const puid = req.params.puid;
+    const project = await startProject(puid);
+    console.log(project);
+    if (project.error) {
+        return res.status(400).json({ message: `Cannot Start Project`,});
+    }
+    res.status(200).json({ message: `Project started successfully!` });
+    return;
+});
+
+router.post('/complete/:puid', authMiddleware(['mentor'], "api"), async (req, res) => {
+    const puid = req.params.puid;
+    const submission = req.body;
+    console.log('called')
+    console.log(submission)
+    const project = await completeProject(puid, submission);
+    console.log(project)
+    if (project.error) {
+        return res.status(400).json({ message: `Cannot Complete Project`,});
+    }
+    res.status(200).json({ message: `Project completed successfully!` });
+    return;
+});
+
+router.post('/submit/:puid', authMiddleware(['tcc'], "api"), async (req, res) => {
+    const puid = req.params.puid;
+    const project = await submitProject(puid);
+    if (project.error) {
+        return res.status(400).json({ message: `Cannot Submit Project`,});
+    }
+    res.status(200).json({ message: `Project submitted successfully!` });
+    return;
+});
+
+router.post('/rejectsubmission/:puid', authMiddleware(['tcc'], "api"), async (req, res) => {
+    const puid = req.body.puid;
+    const project = await rejectSubmission(puid);
+    if (project.error) {
+        return res.status(400).json({ message: `Cannot Reject Submission`,});
+    }
+    res.status(200).json({ message: `Submission rejected successfully!` });
+    return;
+});
+
 module.exports = router;
