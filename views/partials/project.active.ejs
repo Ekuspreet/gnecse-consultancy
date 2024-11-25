@@ -3,7 +3,8 @@
     <div class="collapse-title text-xl font-medium flex justify-between">
         <div>
             <div class="badge p-4 bg-green-500">
-                #<%= project.puid %>
+                <%= project.puid %>
+
             </div>
             <%= project.data.title%> | Approved : <%= project.approvedAt.toLocaleDateString() %>
         </div>
@@ -14,33 +15,50 @@
 
 
                 <button class="btn btn-outline btn-sm btn-success rounded-none" data-puid="<%= project.puid %>"
-                    onclick="completeProject(this)">Complete Project</button>
+                    id="complete-project">Complete Project</button>
 
             </div>
         </div>
     </div>
     <div class="collapse-content">
+
         <div class="interested">
             <div class="p-3 font-semibold text-xl">Students Contributing</div>
             <% if (project.students.length==0) { %>
-                <div class="p-3 text-center text-md font-semibold">No Students Contributing As Of Now. Invite Some.</div>
-            <% } else { %>
-                <div class="p-3 space-y-2" id="students-container">
-                    <% project.students.forEach(function(student) { %>
-                        <div class="student-entry flex items-center gap-2 p-2 border border-gray-300 rounded-lg"
-                             data-uuid="<%= student %>">
-                            <span class="student-details">
-                                <!-- Placeholder text until AJAX request fills details -->
-                                Loading...
-                            </span>
-                        </div>
-                    <% }); %>
+                <div class="p-3 text-center text-md font-semibold">No Students Contributing As Of Now. Invite Some.
                 </div>
-            <% } %>
+                <% } else { %>
+                    <div class="p-3 space-y-2" id="students-container">
+                        <% project.students.forEach(function(student) { %>
+                            <div class="student-entry flex items-center gap-2 p-2 border border-gray-300 rounded-lg"
+                                data-uuid="<%= student %>">
+                                <span class="student-details">
+                                    <!-- Placeholder text until AJAX request fills details -->
+                                    Loading...
+                                </span>
+                            </div>
+                            <% }); %>
+                    </div>
+                    <% } %>
         </div>
-        
-        
-        
+
+        <div class="divider">Update Progress</div>
+
+        <form onsubmit="updateProgress(this,event)" class="flex flex-col gap-2" data-puid="<%= project.puid %>">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text
+                    ">Progress Updation</span>
+                </label>
+                <input type="number" name="progress" class="input input-bordered" min="0" max="100"
+                    value="<%= project.progress %>" />
+            </div>
+
+            <div class="form-control">
+                <button class="btn btn-primary">Update</button>
+            </div>
+        </form>
+
 
     </div>
 </div>
@@ -48,25 +66,25 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         // Select all elements with the class "student-entry"
-    const studentEntries = document.querySelectorAll(".student-entry");
+        const studentEntries = document.querySelectorAll(".student-entry");
 
-    studentEntries.forEach(async (entry) => {
-        const uuid = entry.getAttribute("data-uuid");
-        
-        try {
-            const response = await fetch(`/api/student/${uuid}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                const student = data[0];       
-                // Update the student details in the placeholder
-                
-                entry.querySelector(".student-details").innerHTML = `
+        studentEntries.forEach(async (entry) => {
+            const uuid = entry.getAttribute("data-uuid");
+
+            try {
+                const response = await fetch(`/api/student/${uuid}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const student = data[0];
+                    // Update the student details in the placeholder
+
+                    entry.querySelector(".student-details").innerHTML = `
                 <span class="badge p-4 bg-purple-600  px-2 py-1 ">
                     ${student.uuid}
                     </span>
@@ -75,12 +93,12 @@
                     `;
                 } else {
                     entry.querySelector(".student-details").innerHTML = 'Error loading student data';
+                }
+            } catch (error) {
+                entry.querySelector(".student-details").innerHTML = 'Error loading student data';
+                console.error("Error fetching student data:", error);
             }
-        } catch (error) {
-            entry.querySelector(".student-details").innerHTML = 'Error loading student data';
-            console.error("Error fetching student data:", error);
-        }
+        });
     });
-});
 
 </script>

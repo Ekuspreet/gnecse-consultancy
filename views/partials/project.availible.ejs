@@ -15,68 +15,72 @@
 
 
                 <button class="btn btn-outline btn-sm btn-secondary " data-puid="<%= project.puid %>"
-                    onclick="expressInterest(this)">Express Interest</button>
+                    onclick="interestModal(this)">Express Interest</button>
             </div>
         </div>
     </div>
     <div class="collapse-content">
-        <div class="p-5 space-y-4">
+        
+        <div class="p-3 ">
             <!-- Project Title -->
             <h2 class="text-3xl font-bold">
                 <%= project.data.title %>
             </h2>
     
             <!-- Project Description -->
-            <p class="text-xl text-gray-200"><%= project.data.description %>
-            </p>
+            <div class="text-xl text-gray-200 mb-4 " ><%= project.data.description %>
+            </div>
     
             <!-- Tech Stack and Skills -->
-            <% if (project.data.techStack || project.data.skills) { %>
-            <p class="text-lg text-white">
+           
+            <span class="text-lg text-white">
+                <% if (project.data.techStack) { %>
                 This project involves working with 
-                <span class="text-emerald-600"><%= project.data.techStack || 'a versatile tech stack' %></span>. 
+                <span class="text-emerald-600"><%= project.data.techStack %></span>.
+                <% } %>
+                <% if (project.data.skills) { %>
                 The required skills include 
-                <span class="text-emerald-600"><%= project.data.skills || 'adaptability and willingness to learn' %></span>.
-            </p>
-            <% } %>
-    
+                <span class="text-emerald-600"><%= project.data.skills %></span>.
+                <% } %>
+            </span>
+          
             <!-- Dates -->
             <% if (project.data.startDate && project.data.deadline) { %>
-            <p class="text-lg text-white">
+            <span class="text-lg text-white">
                 Starting from 
                 <span class="text-emerald-600"><%= project.data.startDate %></span>, this project is expected to be completed by 
                 <span class="text-emerald-600"><%= project.data.deadline %></span>.
-            </p>
+            </span>
             <% } %>
     
             <!-- Features, Objectives, Outcomes -->
             <% if (project.data.features || project.data.objectives || project.data.outcomes) { %>
-            <div class="text-lg text-white">
+            <span class="text-lg text-white">
                 <% if (project.data.features) { %>
-                <p>Key features include: <span class="text-emerald-600"><%= project.data.features %></span>.</p>
+                <span>Key features include: <span class="text-emerald-600"><%= project.data.features %></span>.</span>
                 <% } %>
                 <% if (project.data.objectives) { %>
-                <p>The white objective is: <span class="text-emerald-600"><%= project.data.objectives %></span>.</p>
+                <span>The white objective is: <span class="text-emerald-600"><%= project.data.objectives %></span>.</span>
                 <% } %>
                 <% if (project.data.outcomes) { %>
-                <p>Expected outcomes are: <span class="text-emerald-600"><%= project.data.outcomes %></span>.</p>
+                <span>Expected outcomes are: <span class="text-emerald-600"><%= project.data.outcomes %></span>.</span>
                 <% } %>
-            </div>
+                </span>
             <% } %>
     
             <!-- Consulting Hours and Communication -->
             <% if (project.data.consultingHours || project.data.communication) { %>
-            <p class="text-lg text-white">
+            <span class="text-lg text-white">
                 We'll allocate <span class="text-emerald-600"><%= project.data.consultingHours %></span> hours per week for consulting, and prefer to communicate via 
                 <span class="text-emerald-600"><%= project.data.communication %></span>.
-            </p>
+            </span>
             <% } %>
     
             <!-- Project Type -->
             <% if (project.data.projectType) { %>
-            <p class="text-lg text-white">
+            <span class="text-lg text-white">
                 This is a <span class="text-emerald-600"><%= project.data.projectType %></span> project.
-            </p>
+            </span>
             <% } %>
         </div>
     </div>

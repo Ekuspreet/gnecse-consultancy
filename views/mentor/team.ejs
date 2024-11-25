@@ -1,13 +1,13 @@
 <!-- <%= projects %> -->
 
-<div class="p-3 font-bold text-2xl">Team Building For Projects</div>
+<div class="p-3 font-bold text-2xl">TEAM BUILDING FOR PROJECTS</div>
 
 <div class="m-3">
     <% projects.forEach( function(project){ %>
         <%- include('../partials/project.team.ejs', { project: project, }) %>
             <% }); %>
             <% if (projects.length == 0) { %>
-                <div class="p-3 text-center text-2xl font-semibold">No Projects Availible</div>
+                <div class="p-3 text-center text-2xl font-semibold text-error">No Projects Assigned</div>
             <% } %>
 
 </div>

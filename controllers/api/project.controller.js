@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/user.auth');
-const {addProject, updateProject, approveProject, rejectProject, assignProjectToMentor, getStudentsByProjectId, getRequestedStudentsByProjectId, assignProjectToStudent, joinProjectByStudent, leaveProjectByStudent, startProject, completeProject, rejectSubmission, submitProject } = require('../../models/project.model');
+const {addProject, updateProject, approveProject, rejectProject, assignProjectToMentor, getStudentsByProjectId, getRequestedStudentsByProjectId, assignProjectToStudent, joinProjectByStudent, leaveProjectByStudent, startProject, completeProject, rejectSubmission, submitProject,expressInterestByMentor, updateProgress } = require('../../models/project.model');
 const {getAllStudents} = require('../../models/student.model');
 
 router.post('/', authMiddleware(['alumni'], "api"), async (req, res) => {    
@@ -56,6 +56,9 @@ router.post('/approve/:puid', authMiddleware(['tcc'], "api"), async (req, res) =
     return;
 });
 
+
+
+
 router.post('/reject/:puid', authMiddleware(['tcc'], "api"), async (req, res) => {
     const project = await rejectProject(req.params.puid);
     if (project.error) {
@@ -65,16 +68,33 @@ router.post('/reject/:puid', authMiddleware(['tcc'], "api"), async (req, res) =>
     return;
 });
 
-router.post('/assign/:puid' , authMiddleware(['mentor'], "api"), async (req,res) =>{
+
+router.post('/assign/:puid' , authMiddleware(['tcc'], "api"), async (req,res) =>{
     const puid = req.params.puid;    
-    console.log(req.user.uuid)
-    const assigned = await assignProjectToMentor(puid, req.user.uuid);
+    const {mentor} = req.body
+    const assigned = await assignProjectToMentor(puid, mentor);
 
     if(assigned.error){
         return res.status(400).json({ message: `Cannot Assign Project`,});
     };
     return res.status(200).json({ message: `Project assigned successfully!` });
 })
+
+
+router.post('/interest/:puid', authMiddleware(['mentor'], "api"), async (req, res) => {
+console.log(req.body)
+    const puid = req.params.puid;
+    const mentor = req.user.uuid;
+    const interest = req.body;
+    
+    const interested = await expressInterestByMentor(puid,mentor,interest);
+    console.log(interested);
+    if(interested.error){
+        return res.status(400).json({ message: `Cannot Show Interest`,});
+    };
+    return res.status(200).json({ message: `Interest Added Successfully` });
+});
+
 
 router.get('/invite/:puid', authMiddleware(['mentor'], "api"), async (req, res) => {
     const invited = await getStudentsByProjectId(req.params.puid);
@@ -179,6 +199,18 @@ router.post('/rejectsubmission/:puid', authMiddleware(['tcc'], "api"), async (re
         return res.status(400).json({ message: `Cannot Reject Submission`,});
     }
     res.status(200).json({ message: `Submission rejected successfully!` });
+    return;
+});
+
+router.post('/progress/:puid', authMiddleware(['mentor'], "api"), async (req, res) => {
+    const puid = req.params.puid;
+    const {progress} = req.body
+    console.log(progress);
+    const project = await updateProgress(puid,progress);
+    if (project.error) {
+        return res.status(400).json({ message: `Cannot Update Project`,});
+    }
+    res.status(200).json({ message: `Project updated successfully!` });
     return;
 });
 

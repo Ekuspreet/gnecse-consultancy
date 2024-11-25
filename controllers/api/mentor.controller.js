@@ -1,8 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-const { addMentor, deleteMentorById } = require('../../models/mentor.model');
+const { addMentor, deleteMentorById, getMentorById } = require('../../models/mentor.model');
 const authMiddleware = require('../../middleware/user.auth');
+
+router.get("/:id", authMiddleware(['admin'], "api"), async (req, res) => {
+    console.log(req.params.id);
+    const mentor = await getMentorById(req.params.id);
+    console.log(mentor);
+    if (mentor.error) {
+        res.status(400).json({ message: `Unable to find account.`,});
+        return;
+    }
+    res.json(mentor);
+});
 
 router.post('/', authMiddleware(['admin'], "api"), async (req, res) => {
     console.log(req.body);
@@ -25,4 +36,5 @@ router.delete('/:id', authMiddleware(['admin'], "api"), async (req, res) => {
     }
     res.json({ message: `Mentor deleted successfully! UUID : ${req.params.id} ` });
 });
+
 module.exports = router;

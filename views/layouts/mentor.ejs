@@ -43,6 +43,7 @@
        document.addEventListener('DOMContentLoaded', () => {
             const urlParts = window.location.href.split('/');
             const lastItem = urlParts[urlParts.length - 1];
+            console.log(lastItem);
             const navlink = document.getElementById(lastItem);
             navlink.classList.add('btn-secondary');
         });

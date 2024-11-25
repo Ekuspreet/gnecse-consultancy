@@ -11,12 +11,12 @@ const projectSchema = new mongoose.Schema({
   },
   client: {
     type: String,
-    ref: "alumnis",
+    ref: "Alumni",
     required: true,
   },
   mentor: {
     type: String,
-    ref: "staffs",
+    ref: "Staff",
     default: null,
   },
   students: {
@@ -27,6 +27,19 @@ const projectSchema = new mongoose.Schema({
     type: Array,
     ref: "Student",
   },
+  interests: [
+    {
+      staff: {
+        type: String,
+        ref: "Staff",
+        required: true,
+      },
+      details: {
+        type: Object,
+        required: true,
+      },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
@@ -52,6 +65,10 @@ const projectSchema = new mongoose.Schema({
     type: Object,
     default: null,
   },
+  progress: {
+    type: Number,
+    default: 0,
+  }
 });
 
 const Project = mongoose.model("Project", projectSchema);
@@ -103,6 +120,7 @@ const getProjectsByAlumniId = async (id, type) => {
   }
 };
 
+
 const getPendingProjects = async () => {
   try {
     const project = await Project.find({ status: "pending", approvedAt: null });
@@ -112,9 +130,18 @@ const getPendingProjects = async () => {
   }
 };
 
-const getAvailibleProjects  = async () => {
+const getInterests = async (mentor) => {
   try {
-    const project = await Project.find({ status: "approved" , mentor : null });
+    const project = await Project.find({ status : 'approved', interests: { $elemMatch: { staff: mentor } } });
+    return project;
+  } catch (error) {
+    return { error };
+  }
+};
+
+const getAvailibleProjects  = async (mentor) => {
+  try {
+    const project = await Project.find({ status: "approved", mentor: null, interests: { $not: { $elemMatch: { staff: mentor } } } });
     return project;
   } catch (error) {
     return { error };
@@ -124,8 +151,8 @@ const getAvailibleProjects  = async () => {
 const assignProjectToMentor = async (puid,mentor)=> {
   try{
     const result = await Project.updateOne(
-      {status : "approved", mentor : null, puid},
-      { status : "assigned", mentor:mentor}
+      {status : "approved", mentor : null, puid, interests : { $elemMatch : { staff : mentor }}},
+      {status : "assigned", mentor:mentor , interests : [] }
     );
     if(result.matchedCount === 0){
       return { error : "Project not found or already assigned"}
@@ -135,6 +162,8 @@ const assignProjectToMentor = async (puid,mentor)=> {
     return { error : error}
   }
 }
+
+
 
 const approveProject = async (puid) => {
   try {
@@ -185,13 +214,29 @@ const getActiveProjectsByMentorId = async (uuid) => {
   }
 };
 
+const expressInterestByMentor = async ( puid, mentor, details) => {
+  try {
+    const result = await Project.updateOne(
+      { status: "approved", puid },
+      { $push: { interests: { staff: mentor, details: details } } }
+    );
+    if (result.matchedCount === 0) {
+      return { error: "Project not found or already assigned." };
+    }
+    return result;
+  } catch (error) {
+    return { error };
+  }
+};
+
+
 const assignProjectToStudent = async (puid,mentor,student) => {
   try {
     const result = await Project.updateOne(
       { status: "assigned", puid , mentor},
       { $push: { requests: student } }
     );
-    console.log(result);
+    
     if (result.matchedCount === 0) {
       return { error: "Project not found or already assigned" };
     }
@@ -221,6 +266,16 @@ const getRequestedStudentsByProjectId = async (puid) => {
   }
 };
 
+const getApprovedProjects = async () => {
+  try {
+    const project = await Project.find({ status: "approved" });
+    return project;
+  } catch (error) {
+    return { error };
+  }
+};
+
+
 const getRequestsByStudentId = async (uuid) => {
   try {
     const projects = await Project.find({ requests: { $in: [uuid] } });
@@ -230,6 +285,9 @@ const getRequestsByStudentId = async (uuid) => {
     return { error };
   }
 };
+
+
+
 
 const joinProjectByStudent = async (puid, student) => {
   try {
@@ -296,7 +354,7 @@ const completeProject = async (puid,submission) => {
 const submitProject = async (puid) => {
   try {
     const result = await Project.updateOne(
-      { status: "active", puid },
+      { status: "completed", puid },
       { status: "submitted"}
     );
     if (result.matchedCount === 0) {
@@ -307,6 +365,21 @@ const submitProject = async (puid) => {
     return { error };
   }
 }
+
+const updateProjectProgress = async (puid,progress) => {
+  try {
+    const result = await Project.updateOne(
+      { puid },
+      { progress }
+    );
+    if (result.matchedCount === 0) {
+      return { error: "Project not found" };
+    }
+    return result;
+  } catch (error) {
+    return { error };
+  } 
+};
 
 const rejectSubmission = async (puid) => {
   try {
@@ -332,12 +405,38 @@ const getSubmittedProjects = async () => {
   }
 }
 
+const updateProgress = async (puid,progress) => {
+  try {
+    const result = await Project.updateOne(
+      { puid },
+      { progress }
+    );
+    if (result.matchedCount === 0) {
+      return { error: "Project not found" };
+    }
+    return result;
+  } catch (error) {
+    return { error };
+  }
+}
+
+
+const getActiveProjectsByAlumniId = async (uuid) => {
+  try {
+    const project = await Project.find({ client: uuid, status: "active" });
+    return project;
+  } catch (error) {
+    return { error };
+  }
+}
+
 module.exports = {
   addProject,
   getAllProjects,
   getProjectsByAlumniId,
   updateProject,
   getAvailibleProjects,
+  getInterests,
   getPendingProjects,
   approveProject,
   rejectProject,
@@ -355,4 +454,9 @@ module.exports = {
   rejectSubmission,
   getActiveProjectsByMentorId,
   getSubmittedProjects,
+  expressInterestByMentor,
+  getApprovedProjects,
+  updateProjectProgress,
+  updateProgress,
+  getActiveProjectsByAlumniId,
 };

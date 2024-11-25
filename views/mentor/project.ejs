@@ -1,94 +1,104 @@
-<!-- <%= projects %> -->
+ 
 
-<div class="p-3 font-bold text-2xl">Team Building For Projects</div>
+<div class="p-3 font-bold text-2xl">PROJECTS CURRENTLY IN EXECUTION</div>
 
 <div class="m-3">
     <% projects.forEach( function(project){ %>
-        <%- include('../partials/project.active.ejs', { project: project, }) %>
+        <%- include('../partials/project.active.ejs', { project: project }) %>
             <% }); %>
             <% if (projects.length == 0) { %>
-                <div class="p-3 text-center text-2xl font-semibold">No Projects Availible</div>
+                <div class="p-3 text-center text-2xl font-semibold text-error">No Projects Active</div>
             <% } %>
 
 </div>
-<dialog id="submission" class="modal">
+
+<dialog id="completion" class="modal">
     <div class="modal-box w-10/12" style="max-width: none;">
         <div class="flex justify-between items-center">
-            <p class="text-xl font-bold">Submit Your Solution</p>
-            <form method="dialog">
+            <p class="text-xl font-bold">Project Completion</p>
+            <form method="dialog" >
                 <button class="link link-error">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </form>
         </div>
         <div class="modal-body">
-            <form id="solution-submission" class="grid gap-3 grid-flow-row">
-                
+            <form id="completion" class="grid gap-3 grid-flow-row">
+
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text text-md font-semibold">Submission Link <span
+                                class="text-red-400">*</span></span>
+                    </label>
+                    <in class="textarea textarea-bordered" name="description"
+                        placeholder="Briefly Describe Your Solution" rows="10" required></in>
+                </div>
+
+
                 <!-- Solution Title -->
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text text-md font-semibold">Solution Title <span class="text-red-400">*</span></span>
+                        <span class="label-text text-md font-semibold">Submission Brief<span
+                                class="text-red-400">*</span></span>
                     </label>
-                    <input aria-required="true" name="solutionTitle" type="text" placeholder="Enter Solution Title" class="input input-bordered w-full" required>
+                    <textarea aria-required="true" name="title" type="text"
+                        placeholder="Enter Solution Title" class="textarea textarea-bordered w-full" required/>
                 </div>
-                
+
                 <!-- Solution Description -->
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text text-md font-semibold">Solution Description <span class="text-red-400">*</span></span>
-                    </label>
-                    <textarea class="textarea textarea-bordered" name="solutionDescription" placeholder="Briefly describe your solution" rows="5" required></textarea>
-                </div>
-                
-                <!-- Solution Link -->
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text text-md font-semibold">Solution Link <span class="text-red-400">*</span></span>
-                    </label>
-                    <input name="solutionLink" type="text" placeholder="https://example.com" class="input input-bordered w-full" required>
-                </div>
-                
-                <!-- Submission Buttons -->
+              
+
                 <div class="actions flex gap-3 sticky bottom-0 bg-base-100 w-full">
-                    <button type="submit" value="submit" class="btn my-1 flex-1 btn-secondary btn-outline rounded-none no-animation">Submit Solution</button>
+                    <button type="submit" value="submit"
+                        class="btn my-1 flex-1 btn-success btn-outline rounded-none no-animation">Submit
+                        Solution</button>
                 </div>
-                
+
+
             </form>
         </div>
     </div>
 </dialog>
 
 
-
 <script>
-    const form = document.getElementById('solution-submission');
-    const submission = document.getElementById('submission');
-    function completeProject(button) {
-        form.setAttribute('data-puid', button.dataset.puid);
-        submission.showModal();
-    }
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const puid = form.getAttribute('data-puid');
+    
+    const completion = document.getElementById('complete-project');
+
+    completion.addEventListener('click', completeProject);
+
+    function completeProject(){
+        completion.showModal();
+    }
+ 
+    
+    const updateProgress = async (form,event) => {
+        console.log("update called")
+        event.preventDefault();
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        const response = await fetch(`/api/project/complete/${puid}`, {
+        const puid = form.dataset.puid;
+        // alert(`Progress Updated ${puid}`);
+        const progress = data.progress;
+        const response = await fetch(`/api/project/progress/${puid}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify({ progress }),
         });
         const resultData = await response.json();
-        console.log(resultData)
         if (response.ok) {
-            submission.close();
+            alert('Progress Updated');
             window.location.reload();
-        }else{
-            alert('Error Completing Project');
+        } else {
+            alert('Error Updating Progress');
         }
-    });
+    }
+    
 
-</script>
-<!-- Student Invitation Modal -->
+
+
+    </script>

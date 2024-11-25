@@ -21,7 +21,7 @@
         <%- include('../partials/project.approval.ejs', { project: project, }) %>
             <% }); %>
             <% if (pending.length == 0) { %>
-                <div class="p-3 text-center text-2xl font-semibold">No Projects Pending Approval</div>
+                <div class="p-3 text-center text-2xl font-semibold text-error">No Projects Pending Approval</div>
             <% } %>
 </div>
 

@@ -1,0 +1,91 @@
+
+<div class="collapse collapse-arrow bg-base-200 rounded-none border border-cyan-300 gap-1 my-2">
+    <input type="checkbox" id="collapse-= question.questionId %>" />
+    <div class="collapse-title text-xl font-medium flex justify-between">
+        <div>
+            <div class="badge p-4 bg-cyan-600 font-bold">
+                <%= project.puid %>
+            </div>
+            <%= project.data.title%> | Approved : <%= project.approvedAt.toLocaleDateString() %>
+        </div>
+
+    </div>
+    <div class="collapse-content">
+        
+        <div class="p-3 ">
+            <!-- Project Title -->
+            <h2 class="text-3xl font-bold">
+                <%= project.data.title %>
+            </h2>
+    
+            <!-- Project Description -->
+            <div class="text-xl text-gray-200 mb-4 " ><%= project.data.description %>
+            </div>
+    
+            <!-- Tech Stack and Skills -->
+           
+            <span class="text-lg text-white">
+                <% if (project.data.techStack) { %>
+                This project involves working with 
+                <span class="text-cyan-600"><%= project.data.techStack %></span>.
+                <% } %>
+                <% if (project.data.skills) { %>
+                The required skills include 
+                <span class="text-cyan-600"><%= project.data.skills %></span>.
+                <% } %>
+            </span>
+          
+            <!-- Dates -->
+            <% if (project.data.startDate && project.data.deadline) { %>
+            <span class="text-lg text-white">
+                Starting from 
+                <span class="text-cyan-600"><%= project.data.startDate %></span>, this project is expected to be completed by 
+                <span class="text-cyan-600"><%= project.data.deadline %></span>.
+            </span>
+            <% } %>
+    
+            <!-- Features, Objectives, Outcomes -->
+            <% if (project.data.features || project.data.objectives || project.data.outcomes) { %>
+            <span class="text-lg text-white">
+                <% if (project.data.features) { %>
+                <span>Key features include: <span class="text-cyan-600"><%= project.data.features %></span>.</span>
+                <% } %>
+                <% if (project.data.objectives) { %>
+                <span>The white objective is: <span class="text-cyan-600"><%= project.data.objectives %></span>.</span>
+                <% } %>
+                <% if (project.data.outcomes) { %>
+                <span>Expected outcomes are: <span class="text-cyan-600"><%= project.data.outcomes %></span>.</span>
+                <% } %>
+                </span>
+            <% } %>
+    
+            <!-- Consulting Hours and Communication -->
+            <% if (project.data.consultingHours || project.data.communication) { %>
+            <span class="text-lg text-white">
+                We'll allocate <span class="text-cyan-600"><%= project.data.consultingHours %></span> hours per week for consulting, and prefer to communicate via 
+                <span class="text-cyan-600"><%= project.data.communication %></span>.
+            </span>
+            <% } %>
+    
+            <!-- Project Type -->
+            <% if (project.data.projectType) { %>
+            <span class="text-lg text-white">
+                This is a <span class="text-cyan-600"><%= project.data.projectType %></span> project.
+            </span>
+            <% } %>
+        
+        
+        <div class="divider">Proposed Solution</div>
+        
+        <span class="text-lg text-white">
+            Title :  <span class="text-cyan-600"><%= project.interests[0].details.title %></span>
+            <br>
+            Description : <span class="text-cyan-600"><%= project.interests[0].details.description %></span>
+        </span>
+        
+        </div>
+
+    </div>
+    
+
+</div>

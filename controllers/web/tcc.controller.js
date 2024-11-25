@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/user.auth');
-const { getPendingProjects , getActiveProjects, getSubmittedProjects } = require('../../models/project.model');
+const { getPendingProjects , getApprovedProjects, getSubmittedProjects } = require('../../models/project.model');
 
 router.get('/profile', authMiddleware(['tcc'], "web"), async (req, res) => {
     res.render('tcc/index', {
@@ -13,17 +13,18 @@ router.get('/profile', authMiddleware(['tcc'], "web"), async (req, res) => {
 });
 
 
-router.get('/active', authMiddleware(['tcc'], "web"), async (req, res) => {
-    res.render('tcc/active', {
+router.get('/assign', authMiddleware(['tcc'], "web"), async (req, res) => {
+    res.render('tcc/assign', {
         title: 'PROJECTS CURRENTLY BEING WORKED ON',
         layout: 'layouts/tcc',
         user: req.user,
+        projects : await getApprovedProjects(),
     });
 });
 
 
-router.get('/submission', authMiddleware(['tcc'], "web"), (req, res) => {
-    res.render('tcc/submission', {
+router.get('/submit', authMiddleware(['tcc'], "web"), (req, res) => {
+    res.render('tcc/submit', {
         title: 'SUBMISSIONS OF WORK DONE',
         layout: 'layouts/tcc',
         user: req.user

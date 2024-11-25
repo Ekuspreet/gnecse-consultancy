@@ -1,4 +1,3 @@
-
 const {Staff} = require('./user.model');
 const { hashPassword } = require('../services/hasher');
 
@@ -54,7 +53,7 @@ const addMentor = async (mentorData) => {
 
 // Function to delete a mentor by their ID.
 const deleteMentorById = async (uuid) => {
-    console.log(uuid);
+   
     try {
         const userToDelete = await Staff.findOne({ uuid });
         if (!userToDelete) {
