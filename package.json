@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon index.js",
-    "watch": "conc \"tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch\"  \"nodemon index.js\" "
+    "watch": "conc \"tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch\"  \"nodemon index.js\" ",
+    "start:dev" : "node index.js"
+    
   },
   "author": "Ekuspreet, Dilraj, Harsimran",
   "license": "ISC",
